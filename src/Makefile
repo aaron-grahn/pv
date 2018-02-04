@@ -1,7 +1,7 @@
 OBJECTS = key.o buffer.o crypto_mbedtls.o block.o
 
 libpv.a: $(OBJECTS)
-	$(AR) r libpv.a $(OBJECTS)
+	$(AR) rsU libpv.a $(OBJECTS)
 
 key.o: key.cpp
 	$(CXX) $(CXXFLAGS) -c -o key.o key.cpp

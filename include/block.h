@@ -8,7 +8,7 @@
 class Block
 {
 public:
-   Block(Buffer const &data);
+   explicit Block(Buffer const &data);
    virtual ~Block() = default;
 
    Block(Block const&) = default;
