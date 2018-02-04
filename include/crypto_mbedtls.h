@@ -29,7 +29,6 @@ public:
    virtual Buffer finalize() override;
 private:
    mbedtls_md_context_t m_md_context;
-   mbedtls_md_info_t * m_md_info;
 };
 
 #endif // CRYPTO_MBEDTLS_H

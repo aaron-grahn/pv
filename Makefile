@@ -10,13 +10,13 @@ INCLUDE_FLAGS += -I$(MBED_TLS_INCLUDE)
 LIB_FLAGS = -L$(BUILDROOT)/src
 LIB_FLAGS += -L$(MBED_TLS_LIB)
 
-CXXFLAGS = $(INCLUDE_FLAGS) -std=c++11 -Wall -Wextra
-LDFLAGS = $(LIB_FLAGS) -lpv -lmbedcrypto
+CXXFLAGS += $(INCLUDE_FLAGS) -std=c++11 -Wall -Wextra
+LDFLAGS += $(LIB_FLAGS) -lpv -lmbedcrypto
 
 all: pv
 
 pv: src/libpv.a main.o
-	$(CXX) $(CXXFLAGS) -o pv main.o $(LDFLAGS)
+	$(CXX) -o pv main.o $(LDFLAGS)
 	
 main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c -o main.o main.cpp
