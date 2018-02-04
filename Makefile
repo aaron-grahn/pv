@@ -14,6 +14,7 @@ CXXFLAGS += $(INCLUDE_FLAGS) -std=c++11 -Wall -Wextra
 LDFLAGS += $(LIB_FLAGS) -lpv -lmbedcrypto
 
 all: pv
+	$(CXX) --version
 
 pv: src/libpv.a main.o
 	$(CXX) -o pv main.o $(LDFLAGS)
@@ -30,3 +31,7 @@ clean:
 
 install: pv
 	install -m 0755 -t $(INSTALL_PREFIX)/bin pv
+
+# Run the clang static analyzer. 
+scan:
+	scan-build --use-c++=$(CXX) make
