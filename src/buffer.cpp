@@ -4,6 +4,15 @@
 #include "buffer.h"
 
 ////////////////////////////////////////////////////////////////////////////////
+Buffer::Buffer(uint8_t const * const data, std::size_t size_bytes)
+   : m_size_bytes(size_bytes)
+   , m_buffer()
+{
+   assert(size_bytes <= 32);
+   static_cast<void>(memcpy(m_buffer, data, size_bytes));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Buffer::Buffer(size_t size_bytes)
    : m_size_bytes(size_bytes)
    , m_buffer()
@@ -62,7 +71,7 @@ size_t Buffer::size() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-uint8_t *Buffer::get()
+uint8_t const *Buffer::get() const
 {
    return m_buffer;
 }
