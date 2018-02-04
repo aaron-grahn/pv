@@ -3,7 +3,7 @@
 
 #include <string>
 #include "buffer.h"
-#include "key."
+#include "key.h"
 
 class IEcb
 {
@@ -14,9 +14,9 @@ public:
 class IHash
 {
 public:
-   virtual void operator<<(std::string const &data) = 0;
-   virtual void operator<<(Buffer const &data) = 0;
+   virtual IHash &operator<<(std::string const &data) = 0;
+   virtual IHash &operator<<(Buffer const &data) = 0;
    virtual Buffer finalize() = 0;
 };
 
-#endif // crypto.h
+#endif // CRYPTO_H

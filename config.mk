@@ -1,3 +1,6 @@
 
+# Where to install pv.
 INSTALL_PREFIX = /usr/local
-MBED_TLS_PATH=$(shell pwd)/usr
+
+# Where to find mbedtls. 
+MBED_TLS_PATH = $(shell pwd)/usr

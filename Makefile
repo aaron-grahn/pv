@@ -27,3 +27,6 @@ src/libpv.a:
 clean:
 	make -C src clean
 	rm -vf *.o pv
+
+install: pv
+	install -m 0755 -t $(INSTALL_PREFIX)/bin pv
