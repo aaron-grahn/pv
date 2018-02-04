@@ -7,6 +7,7 @@
 namespace
 {
    int const NO_HMAC = 0;
+   std::size_t HASH_SIZE_BYTES = 32;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,7 @@ Hash_mbedtls &Hash_mbedtls::operator=(Hash_mbedtls&&)
 ////////////////////////////////////////////////////////////////////////////////
 IHash &Hash_mbedtls::operator<<(std::string const &data)
 {
-   uint8_t data_buf[32];
+   uint8_t data_buf[HASH_SIZE_BYTES];
    memcpy(&data_buf, data.c_str(), data.size());
    mbedtls_md_update(&m_md_context, data_buf, data.size());
    return *this;
@@ -64,7 +65,7 @@ IHash &Hash_mbedtls::operator<<(std::string const &data)
 ////////////////////////////////////////////////////////////////////////////////
 IHash &Hash_mbedtls::operator<<(Buffer const &data)
 {
-   uint8_t data_buf[32];
+   uint8_t data_buf[HASH_SIZE_BYTES];
    memcpy(&data_buf, data.get(), data.size());
    mbedtls_md_update(&m_md_context, data_buf, data.size());
    return *this;
@@ -73,11 +74,11 @@ IHash &Hash_mbedtls::operator<<(Buffer const &data)
 ////////////////////////////////////////////////////////////////////////////////
 Buffer Hash_mbedtls::finalize()
 {
-   uint8_t hash_buf[32];
+   uint8_t hash_buf[HASH_SIZE_BYTES];
    mbedtls_md_finish(&m_md_context, hash_buf);
    mbedtls_md_starts(&m_md_context);
 
-   Buffer hash(hash_buf, 32);
+   Buffer hash(hash_buf, HASH_SIZE_BYTES);
    return hash;
 }
 
