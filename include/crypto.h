@@ -3,12 +3,14 @@
 
 #include <string>
 #include "buffer.h"
+#include "block.h"
 #include "key.h"
 
 class IEcb
 {
 public:
-   virtual Buffer ecb(Key_base const &key, Buffer const &plaintext) = 0;
+   virtual Block ecb_encrypt(Key_base const &key, Block const &data) = 0;
+   virtual Block ecb_decrypt(Key_base const &key, Block const &data) = 0;
 };
 
 class IHash

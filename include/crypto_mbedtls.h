@@ -5,12 +5,14 @@
 #include <mbedtls/md.h>
 #include "crypto.h"
 #include "buffer.h"
+#include "block.h"
 #include "key.h"
 
 class Ecb_mbedtls : public IEcb
 {
 public:
-   virtual Buffer ecb(Key_base const &key, Buffer const &plaintext) override;
+   virtual Block ecb_encrypt(Key_base const &key, Block const &data) override;
+   virtual Block ecb_decrypt(Key_base const &key, Block const &data) override;
 };
 
 class Hash_mbedtls : public IHash
