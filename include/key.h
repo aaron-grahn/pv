@@ -12,7 +12,7 @@ public:
    virtual ~Key_base() = default;
 
    Key_base(Key_base const&) = default;
-   Key_base &operator=(Key_base const&) = default;
+   Key_base &operator=(Key_base const&) = delete;
    Key_base(Key_base&&) = delete;
    Key_base &operator=(Key_base&&) = delete;
 
@@ -37,7 +37,7 @@ public:
    virtual ~Key() = default;
 
    Key(Key const&) = default;
-   Key &operator=(Key const&) = default;
+   Key &operator=(Key const&) = delete;
    Key(Key&&) = delete;
    Key &operator=(Key&&) = delete;
 };

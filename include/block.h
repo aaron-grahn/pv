@@ -12,7 +12,7 @@ public:
    virtual ~Block() = default;
 
    Block(Block const&) = default;
-   Block &operator=(Block const&) = default;
+   Block &operator=(Block const&) = delete;
    Block(Block&&) = delete;
    Block &operator=(Block&&) = delete;
 

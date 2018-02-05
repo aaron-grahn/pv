@@ -23,7 +23,7 @@ main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c -o main.o main.cpp
 
 src/libpv.a:
-	CC=$(CC) CXXFLAGS="$(CXXFLAGS)" make -C src libpv.a
+	CXX=$(CXX) CXXFLAGS="$(CXXFLAGS)" make -C src libpv.a
 
 clean:
 	make -C src clean
