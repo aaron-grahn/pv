@@ -16,6 +16,12 @@ int main(void)
 
    Block b(k1.buffer());
    std::cout << b << std::endl;
+   Ecb_mbedtls ecb(k1);
+   Block ct(ecb.encrypt(b));
+   std::cout << ct << std::endl;
+   Block pt(ecb.decrypt(ct));
+   std::cout << pt << std::endl;
+
 
    return 0;
 }

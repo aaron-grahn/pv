@@ -9,8 +9,8 @@
 class IEcb
 {
 public:
-   virtual Block ecb_encrypt(Key_base const &key, Block const &data) = 0;
-   virtual Block ecb_decrypt(Key_base const &key, Block const &data) = 0;
+   virtual Block encrypt(Block const &data) = 0;
+   virtual Block decrypt(Block const &data) = 0;
 };
 
 class IHash

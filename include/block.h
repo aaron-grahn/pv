@@ -12,14 +12,15 @@ public:
    virtual ~Block() = default;
 
    Block(Block const&) = default;
-   Block &operator=(Block const&) = delete;
-   Block(Block&&) = delete;
-   Block &operator=(Block&&) = delete;
+   Block &operator=(Block const&) = default;
+   Block(Block&&) = default;
+   Block &operator=(Block&&) = default;
 
    Buffer const &buffer() const;
+   std::size_t size() const;
 
 private:
-   Buffer const m_buffer;
+   Buffer m_buffer;
 };
 
 std::ostream &operator<<(std::ostream &os, Block const &block);
