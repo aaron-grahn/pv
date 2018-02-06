@@ -16,16 +16,16 @@ namespace
       int operation)
    {
       mbedtls_aes_init(&context);
-      int status;
+      int result;
       if(operation == MBEDTLS_AES_ENCRYPT)
       {
-         status = mbedtls_aes_setkey_enc(&context, 
+         result = mbedtls_aes_setkey_enc(&context, 
                                          key.buffer().get(), 
                                          key.size());
       }
       else if(operation == MBEDTLS_AES_DECRYPT)
       {
-         status = mbedtls_aes_setkey_dec(&context, 
+         result = mbedtls_aes_setkey_dec(&context, 
                                          key.buffer().get(), 
                                          key.size());
       }
@@ -34,6 +34,7 @@ namespace
          // Unreachable.
          assert(false);
       }
+      assert(result == 0);
    }
 }
 
