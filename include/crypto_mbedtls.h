@@ -67,6 +67,8 @@ private:
 };
 
    } // namespae Mbedtls
+   using Encryptor = Mbedtls::Encryptor;
+   using Decryptor = Mbedtls::Decryptor;
 } // namespace Port
 
 #endif // CRYPTO_MBEDTLS_H
