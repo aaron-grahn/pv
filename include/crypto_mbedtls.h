@@ -9,35 +9,55 @@
 #include "block.h"
 #include "key.h"
 
-class Ecb_mbedtls : public IEcb
+namespace Port
 {
+   namespace Mbedtls
+   {
+
+class Cryptor : public IEcb
+{
+protected:
+   Cryptor(int mode);
+
 public:
-   Ecb_mbedtls(Key_base const &key);
-   virtual ~Ecb_mbedtls();
+   virtual ~Cryptor();
 
-   Ecb_mbedtls(Ecb_mbedtls const&);
-   Ecb_mbedtls &operator=(Ecb_mbedtls const&);
-   Ecb_mbedtls(Ecb_mbedtls&&) = delete;
-   Ecb_mbedtls &operator=(Ecb_mbedtls&&) = delete;
+   Cryptor(Cryptor const&);
+   Cryptor &operator=(Cryptor const&);
+   Cryptor(Cryptor&&) = delete;
+   Cryptor &operator=(Cryptor&&) = delete;
 
-   virtual Block encrypt(Block const &data) override;
-   virtual Block decrypt(Block const &data) override;
+   virtual Block operator()(Block const &data) override;
 
-private:
-   mbedtls_aes_context m_encipher_context;
-   mbedtls_aes_context m_decipher_context;
+protected:
+   mbedtls_aes_context m_aes_context;
+   int const m_mode;
 };
 
-class Hash_mbedtls : public IHash
+class Encryptor : public Cryptor
 {
 public:
-   Hash_mbedtls();
-   virtual ~Hash_mbedtls();
+   Encryptor(Key_base const &key);
+   virtual ~Encryptor() = default;
+};
 
-   Hash_mbedtls(Hash_mbedtls const&);
-   Hash_mbedtls &operator=(Hash_mbedtls const&);
-   Hash_mbedtls(Hash_mbedtls&&) = delete;
-   Hash_mbedtls &operator=(Hash_mbedtls&&) = delete;
+class Decryptor : public Cryptor
+{
+public:
+   Decryptor(Key_base const &key);
+   virtual ~Decryptor() = default;
+};
+
+class Hash : public IHash
+{
+public:
+   Hash();
+   virtual ~Hash();
+
+   Hash(Hash const&);
+   Hash &operator=(Hash const&);
+   Hash(Hash&&) = delete;
+   Hash &operator=(Hash&&) = delete;
 
    virtual IHash &operator<<(std::string const &data) override;
    virtual IHash &operator<<(Buffer const &data) override;
@@ -45,6 +65,9 @@ public:
 private:
    mbedtls_md_context_t m_md_context;
 };
+
+   } // namespae Mbedtls
+} // namespace Port
 
 #endif // CRYPTO_MBEDTLS_H
 

@@ -7,59 +7,25 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-namespace
+Port::Mbedtls::Cryptor::Cryptor(int mode)
+   : m_aes_context()
+   , m_mode(mode)
 {
-   /////////////////////////////////////////////////////////////////////////////
-   void initialize_cipher_context(
-      mbedtls_aes_context &context,
-      Key_base const &key,
-      int operation)
-   {
-      mbedtls_aes_init(&context);
-      int result;
-      if(operation == MBEDTLS_AES_ENCRYPT)
-      {
-         result = mbedtls_aes_setkey_enc(&context, 
-                                         key.buffer().get(), 
-                                         key.size());
-      }
-      else if(operation == MBEDTLS_AES_DECRYPT)
-      {
-         result = mbedtls_aes_setkey_dec(&context, 
-                                         key.buffer().get(), 
-                                         key.size());
-      }
-      else
-      {
-         // Unreachable.
-         assert(false);
-      }
-      assert(result == 0);
-   }
+   mbedtls_aes_init(&m_aes_context);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Ecb_mbedtls::Ecb_mbedtls(Key_base const &key)
-   : m_encipher_context()
-   , m_decipher_context()
+Port::Mbedtls::Cryptor::~Cryptor()
 {
-   initialize_cipher_context(m_encipher_context, key, MBEDTLS_AES_ENCRYPT);
-   initialize_cipher_context(m_decipher_context, key, MBEDTLS_AES_DECRYPT);
+   mbedtls_aes_free(&m_aes_context);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Ecb_mbedtls::~Ecb_mbedtls()
-{
-   mbedtls_aes_free(&m_encipher_context);
-   mbedtls_aes_free(&m_decipher_context);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-Block Ecb_mbedtls::encrypt(Block const &data)
+Block Port::Mbedtls::Cryptor::operator()(Block const &data)
 {
    Buffer cipher(data.size());
-   int result = mbedtls_aes_crypt_ecb(&m_encipher_context, 
-                                      MBEDTLS_AES_ENCRYPT,
+   int result = mbedtls_aes_crypt_ecb(&m_aes_context, 
+                                      m_mode,
                                       data.buffer().get(),
                                       &cipher[0]);
    assert(result == 0);
@@ -67,15 +33,23 @@ Block Ecb_mbedtls::encrypt(Block const &data)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Block Ecb_mbedtls::decrypt(Block const &data)
+Port::Mbedtls::Encryptor::Encryptor(Key_base const &key)
+   : Port::Mbedtls::Cryptor(MBEDTLS_AES_ENCRYPT)
 {
-   Buffer cipher(data.size());
-   int result = mbedtls_aes_crypt_ecb(&m_decipher_context, 
-                                      MBEDTLS_AES_DECRYPT,
-                                      data.buffer().get(),
-                                      &cipher[0]);
+   int result = mbedtls_aes_setkey_enc(&m_aes_context, 
+                                       key.buffer().get(), 
+                                       key.size());
    assert(result == 0);
-   return Block(cipher);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Port::Mbedtls::Decryptor::Decryptor(Key_base const &key)
+   : Port::Mbedtls::Cryptor(MBEDTLS_AES_DECRYPT)
+{
+   int result = mbedtls_aes_setkey_dec(&m_aes_context, 
+                                       key.buffer().get(), 
+                                       key.size());
+   assert(result == 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +61,7 @@ namespace
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Hash_mbedtls::Hash_mbedtls()
+Port::Mbedtls::Hash::Hash()
    : IHash()
    , m_md_context()
 {
@@ -99,20 +73,21 @@ Hash_mbedtls::Hash_mbedtls()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Hash_mbedtls::~Hash_mbedtls()
+Port::Mbedtls::Hash::~Hash()
 {
    mbedtls_md_free(&m_md_context);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Hash_mbedtls::Hash_mbedtls(Hash_mbedtls const &other)
+Port::Mbedtls::Hash::Hash(Hash const &other)
    : m_md_context()
 {
    mbedtls_md_clone(&m_md_context, &other.m_md_context);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Hash_mbedtls &Hash_mbedtls::operator=(Hash_mbedtls const &other)
+Port::Mbedtls::Hash 
+&Port::Mbedtls::Hash::operator=(Hash const &other)
 {
    mbedtls_md_free(&m_md_context);
    mbedtls_md_clone(&m_md_context, &other.m_md_context);
@@ -120,7 +95,7 @@ Hash_mbedtls &Hash_mbedtls::operator=(Hash_mbedtls const &other)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-IHash &Hash_mbedtls::operator<<(std::string const &data)
+IHash &Port::Mbedtls::Hash::operator<<(std::string const &data)
 {
    uint8_t data_buf[HASH_SIZE_BYTES];
    memcpy(&data_buf, data.c_str(), data.size());
@@ -129,7 +104,7 @@ IHash &Hash_mbedtls::operator<<(std::string const &data)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-IHash &Hash_mbedtls::operator<<(Buffer const &data)
+IHash &Port::Mbedtls::Hash::operator<<(Buffer const &data)
 {
    uint8_t data_buf[HASH_SIZE_BYTES];
    memcpy(&data_buf, data.get(), data.size());
@@ -138,7 +113,7 @@ IHash &Hash_mbedtls::operator<<(Buffer const &data)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Buffer Hash_mbedtls::finalize()
+Buffer Port::Mbedtls::Hash::finalize()
 {
    uint8_t hash_buf[HASH_SIZE_BYTES];
    mbedtls_md_finish(&m_md_context, hash_buf);

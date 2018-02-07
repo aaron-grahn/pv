@@ -10,16 +10,17 @@ int main(void)
    Key<256> k2;
    std::cout << k1 << std::endl;
    std::cout << k2 << std::endl;
-   Hash_mbedtls hm;
-   hm << "fish" << "swish";
-   std::cout << hm.finalize() << std::endl;
+   Port::Mbedtls::Hash h;
+   h << "fish" << "swish";
+   std::cout << h.finalize() << std::endl;
 
    Block b(k1.buffer());
    std::cout << b << std::endl;
-   Ecb_mbedtls ecb(k1);
-   Block ct(ecb.encrypt(b));
+   Port::Mbedtls::Encryptor encrypt(k1);
+   Port::Mbedtls::Decryptor decrypt(k1);
+   Block ct(encrypt(b));
    std::cout << ct << std::endl;
-   Block pt(ecb.decrypt(ct));
+   Block pt(decrypt(ct));
    std::cout << pt << std::endl;
 
 
