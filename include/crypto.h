@@ -26,8 +26,8 @@ public:
 class IBase64
 {
 public:
-   virtual IBase64 &operator<<(Buffer const &data) = 0;
-   virtual IBase64 &operator>>(std::string &out) = 0;
+   virtual std::string encode(Buffer const &data) = 0;
+   virtual Buffer decode(std::string const &data) = 0;
 };
 
 #endif // CRYPTO_H
