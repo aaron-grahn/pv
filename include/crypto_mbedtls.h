@@ -14,7 +14,9 @@ namespace Port
    namespace Mbedtls
    {
 
-class Cryptor : public IEcb
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+class Cryptor : public ICrypto
 {
 protected:
    Cryptor(int mode);
@@ -34,6 +36,7 @@ protected:
    int const m_mode;
 };
 
+////////////////////////////////////////////////////////////////////////////////
 class Encryptor : public Cryptor
 {
 public:
@@ -41,6 +44,7 @@ public:
    virtual ~Encryptor() = default;
 };
 
+////////////////////////////////////////////////////////////////////////////////
 class Decryptor : public Cryptor
 {
 public:
@@ -48,6 +52,8 @@ public:
    virtual ~Decryptor() = default;
 };
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 class Hash : public IHash
 {
 public:
@@ -61,9 +67,21 @@ public:
 
    virtual IHash &operator<<(std::string const &data) override;
    virtual IHash &operator<<(Buffer const &data) override;
-   virtual Buffer finalize() override;
+   virtual IHash &operator>>(Buffer &out) override;
 private:
    mbedtls_md_context_t m_md_context;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+class Base64 : public IBase64
+{
+   Base64() = default;
+   virtual ~Base64() = default;
+   Hash(Hash const&) = default;
+   Hash &operator=(Hash const&) = default;
+   Hash(Hash&&) = default;
+   Hash &operator=(Hash&&) = default;
 };
 
    } // namespae Mbedtls

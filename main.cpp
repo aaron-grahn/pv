@@ -2,6 +2,7 @@
 #include <string>
 #include "key.h"
 #include "block.h"
+#include "buffer.h"
 #include "crypto_port.h"
 
 int main(void)
@@ -12,7 +13,9 @@ int main(void)
    std::cout << k2 << std::endl;
    Port::Hash h;
    h << "fish" << "swish";
-   std::cout << h.finalize() << std::endl;
+   Buffer hash(32);
+   h >> hash;
+   std::cout << hash << std::endl;
 
    Block b(k1.buffer());
    std::cout << b << std::endl;

@@ -117,13 +117,14 @@ IHash &Port::Mbedtls::Hash::operator<<(Buffer const &data)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Buffer Port::Mbedtls::Hash::finalize()
+IHash &Port::Mbedtls::Hash::operator>>(Buffer &out)
 {
    uint8_t hash_buf[HASH_SIZE_BYTES];
    assert(mbedtls_md_finish(&m_md_context, hash_buf) == 0);
    assert(mbedtls_md_starts(&m_md_context) == 0);
 
    Buffer hash(hash_buf, HASH_SIZE_BYTES);
-   return hash;
+   out = hash;
+   return *this;
 }
 
