@@ -3,6 +3,8 @@
 
 #ifdef USE_MBED_TLS
 #include "crypto_mbedtls.h"
+#include "hash_mbedtls.h"
+#include "base64_mbedtls.h"
 namespace Port
 {
    using Encryptor = Mbedtls::Encryptor;
