@@ -1,33 +1,49 @@
 
 include config.mk
 
-MBED_TLS_INCLUDE = $(MBED_TLS_PATH)/include
-MBED_TLS_LIB = $(MBED_TLS_PATH)/lib
-
 BUILDROOT = $(shell pwd)
-INCLUDE_FLAGS  = -I$(BUILDROOT)/include
-INCLUDE_FLAGS += -I$(MBED_TLS_INCLUDE)
-LIB_FLAGS  = -L$(BUILDROOT)/src
-LIB_FLAGS += -L$(MBED_TLS_LIB)
+PV_INCLUDE_FLAGS  = -I$(BUILDROOT)/include
+PV_LIB_FLAGS  = -L$(BUILDROOT)/lib
 
-CXXFLAGS += $(INCLUDE_FLAGS) -std=c++11 -Wall -Wextra
-LDFLAGS += $(LIB_FLAGS) -lpv -lmbedcrypto
+CXXFLAGS += $(PV_INCLUDE_FLAGS) -std=c++11 -Wall -Wextra 
+CXXFLAGS += -DUSE_$(PORT) $(PORT_CXXFLAGS)
+LDFLAGS += $(PV_LIB_FLAGS) -lpv $(PORT_LDFLAGS)
 
 all: pv
 	$(CXX) --version
 
-pv: src/libpv.a main.o
+pv: lib/libpv.a main.o
 	$(CXX) -o pv main.o $(LDFLAGS)
 	
 main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c -o main.o main.cpp
 
-src/libpv.a:
-	CXX=$(CXX) CXXFLAGS="$(CXXFLAGS)" make -C src libpv.a
+################################################################################
+ifeq ($(PORT), MBED_TLS)
+PORT_OBJECTS = crypto_mbedtls.o 
+endif
 
+OBJECTS = key.o buffer.o block.o $(PORT_OBJECTS)
+
+lib/libpv.a: $(OBJECTS)
+	mkdir -p lib
+	$(AR) rsU lib/libpv.a $(OBJECTS)
+
+key.o: src/key.cpp
+	$(CXX) $(CXXFLAGS) -c -o key.o src/key.cpp
+
+block.o: src/block.cpp
+	$(CXX) $(CXXFLAGS) -c -o block.o src/block.cpp
+
+buffer.o: src/buffer.cpp
+	$(CXX) $(CXXFLAGS) -c -o buffer.o src/buffer.cpp
+
+crypto_mbedtls.o: src/crypto_mbedtls.cpp
+	$(CXX) $(CXXFLAGS) -c -o crypto_mbedtls.o src/crypto_mbedtls.cpp
+
+################################################################################
 clean:
-	make -C src clean
-	rm -vf *.o pv
+	rm -rvf *.o pv lib
 
 install: pv
 	install -m 0755 -t $(INSTALL_PREFIX)/bin pv
