@@ -76,6 +76,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 class Base64 : public IBase64
 {
+public:
    Base64() = default;
    virtual ~Base64() = default;
    Base64(Base64 const&) = default;

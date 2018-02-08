@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <cstdint>
+#include <string>
 
 class Buffer
 {
 public: 
    Buffer(uint8_t const * const data, std::size_t size_bytes);
+   Buffer(std::string const &data);
    Buffer(std::size_t size_bytes);
    ~Buffer() = default;
 

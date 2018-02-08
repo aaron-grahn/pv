@@ -1,4 +1,6 @@
+#include <iostream>
 #include <iomanip>
+#include <string>
 #include <cstring>
 #include <cassert>
 #include "buffer.h"
@@ -8,8 +10,17 @@ Buffer::Buffer(uint8_t const * const data, std::size_t size_bytes)
    : m_size_bytes(size_bytes)
    , m_buffer()
 {
-   assert(size_bytes <= 32);
-   static_cast<void>(memcpy(m_buffer, data, size_bytes));
+   assert(m_size_bytes <= 32);
+   static_cast<void>(memcpy(m_buffer, data, m_size_bytes));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Buffer::Buffer(std::string const &data)
+   : m_size_bytes(data.size())
+   , m_buffer()
+{
+   assert(m_size_bytes <= 32);
+   static_cast<void>(memcpy(m_buffer, data.c_str(), m_size_bytes));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
