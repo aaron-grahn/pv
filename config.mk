@@ -3,7 +3,7 @@
 INSTALL_PREFIX = /usr/local
 
 # Uncomment this for a fully static build
-LDFLAGS = -static -static-libstdc++
+#LDFLAGS = -static -static-libstdc++
 
 ################################################################################
 # Select the port.

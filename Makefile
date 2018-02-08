@@ -5,7 +5,7 @@ BUILDROOT = $(shell pwd)
 PV_INCLUDE_FLAGS  = -I$(BUILDROOT)/include
 PV_LIB_FLAGS  = -L$(BUILDROOT)/lib
 
-CXXFLAGS += $(PV_INCLUDE_FLAGS) -std=c++11 -Wall -Wextra 
+CXXFLAGS += $(PV_INCLUDE_FLAGS) -std=c++11 -Wall -Wextra -O2
 CXXFLAGS += -DUSE_$(PORT) $(PORT_CXXFLAGS)
 LDFLAGS += $(PV_LIB_FLAGS) -lpv $(PORT_LDFLAGS)
 
