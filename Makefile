@@ -56,8 +56,8 @@ clean:
 	rm -rvf *.o pv lib
 
 install: pv
-	install -m 0755 -t $(INSTALL_PREFIX)/bin pv
-	install -m 0755 -t $(INSTALL_PREFIX)/lib lib/libpv.so.0
+	install -D -m 0755 -t $(INSTALL_PREFIX)/bin pv
+	install -D -m 0755 -t $(INSTALL_PREFIX)/lib lib/libpv.so.0
 	ln -s -T $(INSTALL_PREFIX)/lib/libpv.so.0 $(INSTALL_PREFIX)/lib/libpv.so
 
 # Run the clang static analyzer. 
