@@ -6,13 +6,13 @@ PV_INCLUDE_FLAGS  = -I$(BUILDROOT)/include
 PV_LIB_FLAGS  = -L$(BUILDROOT)/lib
 
 CXXFLAGS += $(PV_INCLUDE_FLAGS) -std=c++11 -Wall -Wextra -O2
-CXXFLAGS += -DUSE_$(PORT) $(PORT_CXXFLAGS)
+CXXFLAGS += -fPIC -DUSE_$(PORT) $(PORT_CXXFLAGS)
 LDFLAGS += $(PV_LIB_FLAGS) -lpv $(PORT_LDFLAGS)
 
 all: pv
 	$(CXX) --version
 
-pv: lib/libpv.a main.o
+pv: lib/libpv.a lib/libpv.so.0 main.o
 	$(CXX) -o pv main.o $(LDFLAGS)
 	
 main.o: main.cpp
@@ -28,6 +28,10 @@ OBJECTS = key.o buffer.o block.o $(PORT_OBJECTS)
 lib/libpv.a: $(OBJECTS)
 	mkdir -p lib
 	$(AR) rsU lib/libpv.a $(OBJECTS)
+
+lib/libpv.so.0: $(OBJECTS)
+	mkdir -p lib
+	$(CXX) -o lib/libpv.so.0 $(OBJECTS) -shared
 
 key.o: src/key.cpp
 	$(CXX) $(CXXFLAGS) -c -o key.o src/key.cpp
@@ -53,6 +57,8 @@ clean:
 
 install: pv
 	install -m 0755 -t $(INSTALL_PREFIX)/bin pv
+	install -m 0755 -t $(INSTALL_PREFIX)/lib lib/libpv.so.0
+	ln -s -T $(INSTALL_PREFIX)/lib/libpv.so.0 $(INSTALL_PREFIX)/lib/libpv.so
 
 # Run the clang static analyzer. 
 scan:
