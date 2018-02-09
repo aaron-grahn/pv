@@ -9,28 +9,23 @@ int main(void)
 {
    Key<128> k1;
    Key<256> k2;
-   std::cout << k1 << std::endl;
-   std::cout << k2 << std::endl;
+   std::cout << k1.buffer() << std::endl;
+   std::cout << k2.buffer() << std::endl;
 
    Port::Hash h;
    h << "fish" << "swish";
    Buffer hash(32);
    h >> hash;
    std::cout << hash << std::endl;
-   Port::Base64 base64;
-   std::string encoded = base64.encode(hash);
-   std::cout << encoded << std::endl;
-   Buffer decoded(base64.decode(encoded));
-   std::cout << decoded << std::endl;
 
    Block b(k1.buffer());
-   std::cout << b << std::endl;
+   std::cout << b.buffer() << std::endl;
    Port::Encryptor encrypt(k1);
    Port::Decryptor decrypt(k1);
    Block ct(encrypt(b));
-   std::cout << ct << std::endl;
+   std::cout << ct.buffer() << std::endl;
    Block pt(decrypt(ct));
-   std::cout << pt << std::endl;
+   std::cout << pt.buffer() << std::endl;
 
    return 0;
 }

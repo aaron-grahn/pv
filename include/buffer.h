@@ -28,5 +28,6 @@ private:
 };
 
 std::ostream &operator<<(std::ostream &os, Buffer const &buffer);
+std::istream &operator>>(std::istream &is, Buffer &buffer);
 
 #endif // BUFFER_H

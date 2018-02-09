@@ -1,7 +1,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <iostream>
 #include <cstdint>
 #include "buffer.h"
 
@@ -22,8 +21,5 @@ public:
 private:
    Buffer m_buffer;
 };
-
-std::ostream &operator<<(std::ostream &os, Block const &block);
-
 
 #endif // BLOCK_H

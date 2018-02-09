@@ -1,9 +1,9 @@
 #include <iostream>
-#include <iomanip>
 #include <string>
 #include <cstring>
 #include <cassert>
 #include "buffer.h"
+#include "crypto_port.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 Buffer::Buffer(uint8_t const * const data, std::size_t size_bytes)
@@ -90,15 +90,17 @@ uint8_t const *Buffer::get() const
 ////////////////////////////////////////////////////////////////////////////////
 std::ostream &operator<<(std::ostream &os, Buffer const &buffer)
 {
-   std::size_t i;
-   for(i = 0; i < (buffer.size() - 1); i++)
-   {
-      os << std::hex << std::setw(2) << std::setfill('0')
-         << static_cast<int>(buffer[i])
-         << " ";
-   }
-   os << std::hex << std::setw(2) << std::setfill('0')
-      << static_cast<int>(buffer[i]);
+   Port::Base64 base64;
+   os << base64.encode(buffer);
    return os;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+std::istream &operator>>(std::istream &is, Buffer &buffer)
+{
+   Port::Base64 base64;
+   std::string in;
+   is >> in;
+   buffer = base64.decode(in);
+   return is;
+}

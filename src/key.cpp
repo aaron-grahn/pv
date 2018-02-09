@@ -31,6 +31,12 @@ Key_base::Key_base(std::size_t size_bits)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+Key_base::Key_base(Buffer const &data)
+   : m_buffer(data)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::size_t Key_base::size() const
 {
    std::size_t size_bits = m_buffer.size() * 8;
@@ -41,14 +47,4 @@ std::size_t Key_base::size() const
 Buffer const &Key_base::buffer() const
 {
    return m_buffer;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::ostream &operator<<(std::ostream &os, Key_base const &key)
-{
-   os << std::dec << key.size()
-      << "-bit key ["
-      << key.buffer()
-      << "]";
-   return os;
 }
