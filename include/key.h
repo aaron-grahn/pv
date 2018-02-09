@@ -2,7 +2,6 @@
 #define KEY_H
 
 #include <cassert>
-#include <cstdint>
 #include "buffer.h"
 
 class Key_base
@@ -29,8 +28,8 @@ template <std::size_t size_bits>
 class Key : public Key_base 
 {
    static_assert((size_bits == 256) || (size_bits == 128), "");
-public:
 
+public:
    explicit Key(Buffer const &data)
       : Key_base(data)
    {

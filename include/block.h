@@ -1,7 +1,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <cstdint>
 #include "buffer.h"
 
 class Block

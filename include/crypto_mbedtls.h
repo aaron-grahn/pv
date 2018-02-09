@@ -4,7 +4,6 @@
 #include <string>
 #include <mbedtls/aes.h>
 #include "crypto.h"
-#include "buffer.h"
 #include "block.h"
 #include "key.h"
 

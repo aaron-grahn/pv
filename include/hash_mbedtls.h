@@ -28,6 +28,7 @@ public:
    virtual IHash &operator<<(std::string const &data) override;
    virtual IHash &operator<<(Buffer const &data) override;
    virtual IHash &operator>>(Buffer &out) override;
+
 private:
    mbedtls_md_context_t m_md_context;
 };
