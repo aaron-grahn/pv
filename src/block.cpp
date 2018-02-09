@@ -1,6 +1,4 @@
 #include <cassert>
-#include <iostream>
-#include <iomanip>
 #include <fcntl.h>
 #include <unistd.h>
 #include "block.h"
@@ -30,14 +28,4 @@ Buffer const &Block::buffer() const
 std::size_t Block::size() const
 {
    return m_buffer.size();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::ostream &operator<<(std::ostream &os, Block const &block)
-{
-   os << std::dec << 128
-      << "-bit block ["
-      << block.buffer()
-      << "]";
-   return os;
 }
