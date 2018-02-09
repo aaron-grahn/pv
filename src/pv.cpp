@@ -44,13 +44,23 @@ Pv::Pv(std::string const &store)
 ////////////////////////////////////////////////////////////////////////////////
 void Pv::initialize()
 {
-   std::string const MASTER_KEY_PATH = m_store + "/master.key";
+   // Verify that the store is not already initialized.
    struct stat s;
+   std::string const MASTER_KEY_PATH = m_store + "/master.key";
    assert(stat(MASTER_KEY_PATH.c_str(), &s) != 0);
 
-   std::ofstream out(MASTER_KEY_PATH);
+   std::string const SALT_PATH = m_store + "/salt";
+   assert(stat(SALT_PATH.c_str(), &s) != 0);
+
+   // Initialize the store.
+   // TODO: Encrypt the master key.
+   std::ofstream key_out(MASTER_KEY_PATH);
    Random_buffer master_key(16);
-   out << master_key;
+   key_out << master_key;
+
+   std::ofstream salt_out(SALT_PATH);
+   Random_buffer salt(16);
+   salt_out << salt;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
