@@ -8,8 +8,7 @@
 class Key_base
 {
 protected:
-   Key_base(std::size_t size_bits);
-   Key_base(Buffer const &data);
+   explicit Key_base(Buffer const &data);
 
 public:
    virtual ~Key_base() = default;
@@ -31,12 +30,8 @@ class Key : public Key_base
 {
    static_assert((size_bits == 256) || (size_bits == 128), "");
 public:
-   Key()
-      : Key_base(size_bits)
-   {
-   }
 
-   Key(Buffer const &data)
+   explicit Key(Buffer const &data)
       : Key_base(data)
    {
       assert(data.size() * 8 == size_bits);
@@ -49,6 +44,5 @@ public:
    Key(Key&&) = default;
    Key &operator=(Key&&) = default;
 };
-
 
 #endif // KEY_H

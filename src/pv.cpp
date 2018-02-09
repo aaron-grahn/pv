@@ -4,23 +4,29 @@
 #include "pv.h"
 #include "crypto_port.h"
 #include "key.h"
-#include "buffer.h"
+#include "random_buffer.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace
 {
    Key<256> get_user_key()
    {
-      // Get the passphrase.
-      std::string passphrase;
+      // Prompt for the passphrase.
       std::cout << "passphrase: ";
-      std::cin >> passphrase;
 
+      // Get the passphrase.
+      char buffer[256];
+      std::cin.getline(buffer, 256);
+      std::string passphrase(buffer);
+
+      // Hash the passphrase.
       Port::Hash hash;
       Buffer user_key_buffer(32);
       hash << passphrase;
+      // TODO: Needs more salt.
       hash >> user_key_buffer;
 
+      // Return the user key.
       Key<256> user_key(user_key_buffer);
       return user_key;
    }
@@ -43,8 +49,8 @@ void Pv::initialize()
    assert(stat(MASTER_KEY_PATH.c_str(), &s) != 0);
 
    std::ofstream out(MASTER_KEY_PATH);
-   Key<128> master_key;
-   out << master_key.buffer();
+   Random_buffer master_key(16);
+   out << master_key;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
