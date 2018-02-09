@@ -15,9 +15,9 @@ public:
    virtual ~Key_base() = default;
 
    Key_base(Key_base const&) = default;
-   Key_base &operator=(Key_base const&) = delete;
-   Key_base(Key_base&&) = delete;
-   Key_base &operator=(Key_base&&) = delete;
+   Key_base &operator=(Key_base const&) = default;
+   Key_base(Key_base&&) = default;
+   Key_base &operator=(Key_base&&) = default;
 
    std::size_t size() const;
    Buffer const &buffer() const;
@@ -45,9 +45,9 @@ public:
    virtual ~Key() = default;
 
    Key(Key const&) = default;
-   Key &operator=(Key const&) = delete;
-   Key(Key&&) = delete;
-   Key &operator=(Key&&) = delete;
+   Key &operator=(Key const&) = default;
+   Key(Key&&) = default;
+   Key &operator=(Key&&) = default;
 };
 
 

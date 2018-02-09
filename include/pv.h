@@ -2,6 +2,7 @@
 #define PV_H
 
 #include <string>
+#include "key.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 class Pv
@@ -21,6 +22,7 @@ public:
 
 private:
    std::string const &m_store;
+   Key<256> const m_user_key;
 };
 
 #endif // PV_H
