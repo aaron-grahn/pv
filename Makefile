@@ -61,8 +61,9 @@ clean:
 install: pv
 	install -D -m 0755 -t $(INSTALL_PREFIX)/bin pv
 	install -D -m 0755 -t $(INSTALL_PREFIX)/lib lib/libpv.so.0
+	install -D -m 0644 -t $(INSTALL_PREFIX)/lib lib/libpv.a
 	install -D -m 0644 -t $(INSTALL_PREFIX)/include include/pv.h
-	ln -s -T $(INSTALL_PREFIX)/lib/libpv.so.0 $(INSTALL_PREFIX)/lib/libpv.so
+	ln -f -s -T $(INSTALL_PREFIX)/lib/libpv.so.0 $(INSTALL_PREFIX)/lib/libpv.so
 
 # Run the clang static analyzer. 
 scan:
