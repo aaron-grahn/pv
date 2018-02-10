@@ -3,6 +3,7 @@
 
 #include <string>
 #include "key.h"
+#include "buffer.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 class Pv
@@ -22,7 +23,9 @@ public:
 
 private:
    std::string const &m_store;
-   Key<256> const m_user_key;
+
+   Buffer get_salt();
+   Key<256> get_user_key();
 };
 
 #endif // PV_H
