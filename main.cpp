@@ -82,30 +82,5 @@ int main(int argc, char **argv, char **env)
       return usage(std::string(argv[0]));
    }
 
-
-
    return 0;
 }
-/*
-
-   Random_buffer k1(16);
-   Random_buffer k2(32);
-   std::cout << k1 << std::endl;
-   std::cout << k2 << std::endl;
-   Port::Hash h;
-   h << "fish" << "swish";
-   Buffer hash(32);
-   h >> hash;
-   std::cout << hash << std::endl;
-
-   Key<128> keykey(k1);
-   Block b(k1);
-   std::cout << b.buffer() << std::endl;
-   Port::Encryptor encrypt(keykey);
-   Port::Decryptor decrypt(keykey);
-   Block ct(encrypt(b));
-   std::cout << ct.buffer() << std::endl;
-   Block pt(decrypt(ct));
-   std::cout << pt.buffer() << std::endl;
-
-   */

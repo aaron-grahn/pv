@@ -14,13 +14,17 @@
 namespace
 {
    /////////////////////////////////////////////////////////////////////////////
+   bool file_exists(std::string const &path)
+   {
+      struct stat s;
+      return stat(path.c_str(), &s) == 0;
+   }
+
+   /////////////////////////////////////////////////////////////////////////////
    void gen_salt(std::string const &store)
    {
       std::string const SALT_PATH = store + "/salt";
-
-      // Verify that the salt is not already initialized.
-      struct stat s;
-      assert(stat(SALT_PATH.c_str(), &s) != 0);
+      assert(not file_exists(SALT_PATH));
 
       std::ofstream salt_out(SALT_PATH);
       Random_buffer salt(16);
@@ -30,15 +34,12 @@ namespace
    /////////////////////////////////////////////////////////////////////////////
    Buffer get_salt(std::string const &store)
    {
-      struct stat s;
       std::string const SALT_PATH = store + "/salt";
-      assert(stat(SALT_PATH.c_str(), &s) == 0);
+      assert(file_exists(SALT_PATH));
 
       std::ifstream salt_in(SALT_PATH);
       Buffer salt(16);
       salt_in >> Io::Encoding::Base64 >> salt;
-      std::cout << "Salt: " << Io::Encoding::Base64 << salt;
-      std::cout << std::endl;
       return salt;
    }
 
@@ -55,8 +56,6 @@ namespace
       std::stringstream filename;
       filename << Io::Encoding::Hex << filebuf;
       std::string const SITE_FILE_PATH = store + "/" + filename.str();
-      std::cout << "Site file path: " << SITE_FILE_PATH;
-      std::cout << std::endl;
 
       return SITE_FILE_PATH;
    }
@@ -81,8 +80,6 @@ namespace
 
       // Return the user key.
       Key<256> user_key(user_key_buffer);
-      std::cout << "User key: " << Io::Encoding::Base64 << user_key;
-      std::cout << std::endl;
       return user_key;
    }
 
@@ -98,8 +95,6 @@ namespace
       key_in >> Io::Encoding::Base64 >> master_key_buffer;
 
       Key<128> master_key(decrypt(Block(master_key_buffer)));
-      std::cout << "Master key: " << Io::Encoding::Base64 << master_key;
-      std::cout << std::endl;
 
       // Return the user key.
       return master_key;
@@ -131,8 +126,6 @@ void Pv::initialize()
    Port::Encryptor encrypt(user_key);
    std::ofstream key_out(MASTER_KEY_PATH);
    Random_buffer master_key(16);
-   std::cout << "Master key: " << Io::Encoding::Base64 << master_key;
-   std::cout << std::endl;
    key_out << Io::Encoding::Base64 << encrypt(Block(master_key));
 }
 
@@ -140,13 +133,12 @@ void Pv::initialize()
 void Pv::add(std::string const &site)
 {
    std::string const SITE_FILE_PATH = get_site_path(m_store, site);
+   assert(not file_exists(SITE_FILE_PATH));
 
    std::ofstream site_out(SITE_FILE_PATH);
    Key<128> master_key = get_master_key(m_store);
    Port::Encryptor encrypt(master_key);
    Random_buffer site_password(16);
-   std::cout << "Site password: " << Io::Encoding::Base64 << site_password;
-   std::cout << std::endl;
    site_out << Io::Encoding::Base64 << encrypt(Block(site_password));
 }
 
@@ -154,13 +146,14 @@ void Pv::add(std::string const &site)
 void Pv::get(std::string const &site)
 {
    std::string const SITE_FILE_PATH = get_site_path(m_store, site);
+   assert(file_exists(SITE_FILE_PATH));
 
    std::ifstream site_in(SITE_FILE_PATH);
    Key<128> master_key = get_master_key(m_store);
    Port::Decryptor decrypt(master_key);
    Buffer site_password(16);
    site_in >> Io::Encoding::Base64 >> site_password;
-   std::cout << "Site password: " << Io::Encoding::Base64 << decrypt(Block(site_password));
-   std::cout << std::endl;
+
+   std::cout << Io::Encoding::Base64 << decrypt(Block(site_password));
 }
 
