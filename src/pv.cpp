@@ -40,7 +40,7 @@ void Pv::initialize()
    Port::Encryptor encrypt(user_key);
    std::ofstream key_out(MASTER_KEY_PATH);
    Random_buffer master_key(16);
-   key_out << encrypt(Block(master_key)).buffer();
+   key_out << encrypt(Block(master_key));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

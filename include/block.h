@@ -1,8 +1,10 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include <iostream>
 #include "buffer.h"
 
+////////////////////////////////////////////////////////////////////////////////
 class Block
 {
 public:
@@ -20,5 +22,8 @@ public:
 private:
    Buffer m_buffer;
 };
+
+////////////////////////////////////////////////////////////////////////////////
+std::ostream &operator<<(std::ostream &os, Block const &data);
 
 #endif // BLOCK_H

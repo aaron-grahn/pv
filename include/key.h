@@ -1,9 +1,11 @@
 #ifndef KEY_H
 #define KEY_H
 
+#include <iostream>
 #include <cassert>
 #include "buffer.h"
 
+////////////////////////////////////////////////////////////////////////////////
 class Key_base
 {
 protected:
@@ -24,6 +26,7 @@ private:
    Buffer m_buffer;
 };
 
+////////////////////////////////////////////////////////////////////////////////
 template <std::size_t size_bits>
 class Key : public Key_base 
 {
@@ -43,5 +46,8 @@ public:
    Key(Key&&) = default;
    Key &operator=(Key&&) = default;
 };
+
+////////////////////////////////////////////////////////////////////////////////
+std::ostream &operator<<(std::ostream &os, Key_base const &data);
 
 #endif // KEY_H
