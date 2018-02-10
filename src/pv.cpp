@@ -113,10 +113,7 @@ Pv::Pv(std::string const &store)
 void Pv::initialize()
 {
    std::string const MASTER_KEY_PATH = m_store + "/master.key";
-
-   // Verify that the store is not already initialized.
-   struct stat s;
-   assert(stat(MASTER_KEY_PATH.c_str(), &s) != 0);
+   assert(not file_exists(MASTER_KEY_PATH));
 
    // Initialize the store. First, make some salt.
    gen_salt(m_store);
