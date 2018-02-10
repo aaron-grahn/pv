@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cassert>
 #include "buffer.h"
+#include "block.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 class Key_base
@@ -37,6 +38,11 @@ public:
       : Key_base(data)
    {
       assert(data.size() * 8 == size_bits);
+   }
+
+   explicit Key(Block const &data)
+      : Key(data.buffer())
+   {
    }
 
    virtual ~Key() = default;

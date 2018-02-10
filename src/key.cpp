@@ -2,6 +2,7 @@
 #include <iostream>
 #include "key.h"
 #include "buffer.h"
+#include "block.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 Key_base::Key_base(Buffer const &data)
