@@ -4,6 +4,7 @@
 #include <cassert>
 #include "buffer.h"
 #include "crypto_port.h"
+#include "io.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 Buffer::Buffer(uint8_t const * const data, std::size_t size_bytes)
@@ -88,19 +89,15 @@ uint8_t const *Buffer::get() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream &operator<<(std::ostream &os, Buffer const &buffer)
+Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Buffer const &data)
 {
-   Port::Base64 base64;
-   os << base64.encode(buffer);
+   os.write(data);
    return os;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::istream &operator>>(std::istream &is, Buffer &buffer)
+Io::Istream::Byte &operator>>(Io::Istream::Byte &is, Buffer &data)
 {
-   Port::Base64 base64;
-   std::string in;
-   is >> in;
-   buffer = base64.decode(in);
+   data = is.read();
    return is;
 }

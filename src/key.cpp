@@ -1,5 +1,5 @@
 #include <cassert>
-#include <iostream>
+#include "io.h"
 #include "key.h"
 #include "buffer.h"
 #include "block.h"
@@ -24,7 +24,7 @@ Buffer const &Key_base::buffer() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream &operator<<(std::ostream &os, Key_base const &data)
+Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Key_base const &data)
 {
    os << data.buffer();
    return os;

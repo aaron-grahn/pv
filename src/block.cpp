@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cassert>
 #include <fcntl.h>
 #include <unistd.h>
@@ -32,7 +31,7 @@ std::size_t Block::size() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream &operator<<(std::ostream &os, Block const &data)
+Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Block const &data)
 {
    os << data.buffer();
    return os;

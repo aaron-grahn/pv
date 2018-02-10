@@ -1,8 +1,8 @@
 #ifndef KEY_H
 #define KEY_H
 
-#include <iostream>
 #include <cassert>
+#include "io.h"
 #include "buffer.h"
 #include "block.h"
 
@@ -54,6 +54,6 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream &operator<<(std::ostream &os, Key_base const &data);
+Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Key_base const &data);
 
 #endif // KEY_H

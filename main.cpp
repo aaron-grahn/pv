@@ -76,7 +76,6 @@ int main(int argc, char **argv, char **env)
       {
          return usage(std::string(argv[0]));
       }
-      std::cout << site << std::endl;
    }
    else
    {

@@ -1,10 +1,23 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-#include <iostream>
 #include <cstdint>
 #include <string>
 
+////////////////////////////////////////////////////////////////////////////////
+namespace Io
+{
+   namespace Ostream
+   {
+      class Byte;
+   }
+   namespace Istream
+   {
+      class Byte;
+   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 class Buffer
 {
 public: 
@@ -27,7 +40,8 @@ private:
    uint8_t m_buffer[32];
 };
 
-std::ostream &operator<<(std::ostream &os, Buffer const &buffer);
-std::istream &operator>>(std::istream &is, Buffer &buffer);
+////////////////////////////////////////////////////////////////////////////////
+Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Buffer const &data);
+Io::Istream::Byte &operator>>(Io::Istream::Byte &is, Buffer &data);
 
 #endif // BUFFER_H

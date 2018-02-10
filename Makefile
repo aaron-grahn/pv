@@ -23,7 +23,7 @@ ifeq ($(PORT), MBED_TLS)
 PORT_OBJECTS = crypto_mbedtls.o hash_mbedtls.o base64_mbedtls.o
 endif
 
-OBJECTS = pv.o key.o buffer.o random_buffer.o block.o $(PORT_OBJECTS)
+OBJECTS = pv.o io.o key.o buffer.o random_buffer.o block.o $(PORT_OBJECTS)
 
 lib/libpv.a: $(OBJECTS)
 	mkdir -p lib
@@ -35,6 +35,9 @@ lib/libpv.so.0: $(OBJECTS)
 
 pv.o: src/pv.cpp
 	$(CXX) $(CXXFLAGS) -c -o pv.o src/pv.cpp
+
+io.o: src/io.cpp
+	$(CXX) $(CXXFLAGS) -c -o io.o src/io.cpp
 
 key.o: src/key.cpp
 	$(CXX) $(CXXFLAGS) -c -o key.o src/key.cpp

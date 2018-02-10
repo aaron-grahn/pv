@@ -1,7 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <iostream>
+#include "io.h"
 #include "buffer.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,6 +24,6 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream &operator<<(std::ostream &os, Block const &data);
+Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Block const &data);
 
 #endif // BLOCK_H
