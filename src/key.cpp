@@ -26,5 +26,6 @@ Buffer const &Key_base::buffer() const
 std::ostream &operator<<(std::ostream &os, Key_base const &data)
 {
    os << data.buffer();
+   return os;
 }
 

@@ -35,4 +35,5 @@ std::size_t Block::size() const
 std::ostream &operator<<(std::ostream &os, Block const &data)
 {
    os << data.buffer();
+   return os;
 }
