@@ -1,11 +1,11 @@
 #include <cassert>
 #include <mbedtls/base64.h>
 #include <cstring>
-#include "base64_mbedtls.h"
+#include "encoding_mbedtls.h"
 #include "buffer.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Port::Mbedtls::Base64::encode(Buffer const &data)
+std::string Port::Mbedtls::Encoding::encode(Buffer const &data)
 {
    char buf[46];
 
@@ -24,7 +24,7 @@ std::string Port::Mbedtls::Base64::encode(Buffer const &data)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Buffer Port::Mbedtls::Base64::decode(std::string const &data) 
+Buffer Port::Mbedtls::Encoding::decode(std::string const &data) 
 {
    uint8_t buf[32];
    std::size_t olen;

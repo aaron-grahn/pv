@@ -47,7 +47,7 @@ Io::Istream::Base64::Base64(std::istream &is)
 ////////////////////////////////////////////////////////////////////////////////
 Buffer Io::Istream::Base64::decode(std::string const &data)
 {
-   Port::Base64 base64;
+   Port::Encoding base64;
    return base64.decode(data);
 }
 
@@ -94,7 +94,7 @@ Io::Ostream::Base64::Base64(std::ostream &os)
 std::string Io::Ostream::Base64::encode(Buffer const &data)
 {
    std::stringstream ss;
-   Port::Base64 base64;
+   Port::Encoding base64;
    ss << base64.encode(data);
    return ss.str();
 }

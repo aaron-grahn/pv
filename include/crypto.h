@@ -22,7 +22,7 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-class IBase64
+class IEncoding
 {
 public:
    virtual std::string encode(Buffer const &data) = 0;

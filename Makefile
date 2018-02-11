@@ -20,7 +20,7 @@ main.o: main.cpp
 
 ################################################################################
 ifeq ($(PORT), MBED_TLS)
-PORT_OBJECTS = crypto_mbedtls.o hash_mbedtls.o base64_mbedtls.o
+PORT_OBJECTS = crypto_mbedtls.o hash_mbedtls.o encoding_mbedtls.o
 endif
 
 OBJECTS = pv.o io.o key.o buffer.o random_buffer.o block.o $(PORT_OBJECTS)
@@ -57,8 +57,8 @@ crypto_mbedtls.o: src/crypto_mbedtls.cpp
 hash_mbedtls.o: src/hash_mbedtls.cpp
 	$(CXX) $(CXXFLAGS) -c -o hash_mbedtls.o src/hash_mbedtls.cpp
 
-base64_mbedtls.o: src/base64_mbedtls.cpp
-	$(CXX) $(CXXFLAGS) -c -o base64_mbedtls.o src/base64_mbedtls.cpp
+encoding_mbedtls.o: src/encoding_mbedtls.cpp
+	$(CXX) $(CXXFLAGS) -c -o encoding_mbedtls.o src/encoding_mbedtls.cpp
 
 ################################################################################
 clean:

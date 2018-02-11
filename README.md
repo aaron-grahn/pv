@@ -19,7 +19,7 @@ hash. 128 bits.
 
 # Algorithms
 
-pv makes use of a cipher E\_k(M), D\_k(M), and a hash H(M).
+pv makes use of a cipher M' = E\_k(M), M = D\_k(M'); and a hash H(M).
 
 A master key m and a salt string s are generated at initialization. 
 
@@ -61,3 +61,7 @@ name is
 A port provides implementations of E\_k(M), D\_k(M), and H(M). It also provides
 Base64 encoding. Ports are not obligated to use the same cryptographic
 primitives as one another. 
+
+It is necessary that the H(M) output a hash of a size that can be used as a key
+by the functions E and D. It is also necessary that the block size of the
+functions E and D is the same as a valid key size.
