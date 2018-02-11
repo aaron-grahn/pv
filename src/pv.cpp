@@ -90,6 +90,8 @@ namespace
       Port::Decryptor decrypt(user_key);
 
       std::string const MASTER_KEY_PATH = store + "/master.key";
+      assert(file_exists(MASTER_KEY_PATH));
+
       Buffer master_key_buffer(16);
       std::ifstream key_in(MASTER_KEY_PATH);
       key_in >> Io::Encoding::Base64 >> master_key_buffer;
@@ -106,21 +108,24 @@ namespace
 Pv::Pv(std::string const &store)
    : m_store(store)
 {
-   static_cast<void>(mkdir(m_store.c_str(), 0700));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Pv::initialize()
 {
-   std::string const MASTER_KEY_PATH = m_store + "/master.key";
-   assert(not file_exists(MASTER_KEY_PATH));
+   // Create the directory. 
+   assert(mkdir(m_store.c_str(), 0700) == 0);
 
    // Initialize the store. First, make some salt.
    gen_salt(m_store);
 
-   // Encrypt the master key with the user key.
+   // Get the user key. 
    Key<256> user_key = get_user_key(m_store);
    Port::Encryptor encrypt(user_key);
+
+   // Encrypt the master key with the user key.
+   std::string const MASTER_KEY_PATH = m_store + "/master.key";
+   assert(not file_exists(MASTER_KEY_PATH));
    std::ofstream key_out(MASTER_KEY_PATH);
    Random_buffer master_key(16);
    key_out << Io::Encoding::Base64 << encrypt(Block(master_key));

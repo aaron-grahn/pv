@@ -12,32 +12,33 @@
 ////////////////////////////////////////////////////////////////////////////////
 namespace
 {
+   std::string const VERSION_STRING = "0.0.0";
 
-////////////////////////////////////////////////////////////////////////////////
-std::string findhome(char **env)
-{
-	for (int i = 0; env [i]; i ++)
-	{
-		char *key = strtok (env [i], "=");
-		char *val = strtok (0, "");
-		if (! strcmp (key, "HOME"))
-		{
-			std::string home(val);
-         return home;
-		}
-	}
-   assert(false);
-}
+   /////////////////////////////////////////////////////////////////////////////
+   std::string findhome(char **env)
+   {
+      for (int i = 0; env [i]; i ++)
+      {
+         char *key = strtok (env [i], "=");
+         char *val = strtok (0, "");
+         if (! strcmp (key, "HOME"))
+         {
+            std::string home(val);
+            return home;
+         }
+      }
+      assert(false);
+   }
 
-////////////////////////////////////////////////////////////////////////////////
-int usage(std::string const &name)
-{
-   std::cout << "Usage: "
-             << name << " "
-             << "{init | [add | get] <site>}"
-             << std::endl;
-   return 1;
-}
+   /////////////////////////////////////////////////////////////////////////////
+   int usage(std::string const &name)
+   {
+      std::cout << "Usage: "
+                << name << " "
+                << "{-v | init | {add | get} <site>}"
+                << std::endl;
+      return 1;
+   }
 
 } //namespace
 
@@ -46,7 +47,6 @@ int main(int argc, char **argv, char **env)
 {
    std::string const HOME = findhome(env);
    std::string const STORE = HOME + "/.pv";
-   std::cout << STORE << std::endl;
    Pv pv(STORE);
 
    // Parse the arguments. 
@@ -55,6 +55,11 @@ int main(int argc, char **argv, char **env)
       if(std::string("init") == argv[1])
       {
          pv.initialize();
+      }
+      else if(std::string("-v") == argv[1])
+      {
+         std::cout << argv[0] << " "
+                   << VERSION_STRING << std::endl;
       }
       else
       {

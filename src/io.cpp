@@ -103,6 +103,7 @@ std::string Io::Ostream::Base64::encode(Buffer const &data)
 ////////////////////////////////////////////////////////////////////////////////
 namespace
 {
+   // This is the nasty bit.
    std::unique_ptr<Io::Istream::Byte> in(nullptr); 
    std::unique_ptr<Io::Ostream::Byte> out(nullptr);
 
