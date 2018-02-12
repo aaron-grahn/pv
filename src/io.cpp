@@ -114,7 +114,7 @@ namespace
       {
          in.reset(new Io::Istream::Hex(is));
       }
-      else if(enc == Io::Encoding::Base64)
+      else if(enc == Io::Encoding::Ascii)
       {
          in.reset(new Io::Istream::Base64(is));
       }
@@ -132,7 +132,7 @@ namespace
       {
          out.reset(new Io::Ostream::Hex(os));
       }
-      else if(enc == Io::Encoding::Base64)
+      else if(enc == Io::Encoding::Ascii)
       {
          out.reset(new Io::Ostream::Base64(os));
       }

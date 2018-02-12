@@ -28,7 +28,7 @@ namespace
 
       std::ofstream salt_out(SALT_PATH);
       Random_buffer salt(16);
-      salt_out << Io::Encoding::Base64 << salt;
+      salt_out << Io::Encoding::Ascii << salt;
    }
 
    /////////////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ namespace
 
       std::ifstream salt_in(SALT_PATH);
       Buffer salt(16);
-      salt_in >> Io::Encoding::Base64 >> salt;
+      salt_in >> Io::Encoding::Ascii >> salt;
       return salt;
    }
 
@@ -94,7 +94,7 @@ namespace
 
       Buffer master_key_buffer(16);
       std::ifstream key_in(MASTER_KEY_PATH);
-      key_in >> Io::Encoding::Base64 >> master_key_buffer;
+      key_in >> Io::Encoding::Ascii >> master_key_buffer;
 
       Key<128> master_key(decrypt(Block(master_key_buffer)));
 
@@ -128,7 +128,7 @@ void Pv::initialize()
    assert(not file_exists(MASTER_KEY_PATH));
    std::ofstream key_out(MASTER_KEY_PATH);
    Random_buffer master_key(16);
-   key_out << Io::Encoding::Base64 << encrypt(Block(master_key));
+   key_out << Io::Encoding::Ascii << encrypt(Block(master_key));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ void Pv::add(std::string const &site)
    Key<128> master_key = get_master_key(m_store);
    Port::Encryptor encrypt(master_key);
    Random_buffer site_password(16);
-   site_out << Io::Encoding::Base64 << encrypt(Block(site_password));
+   site_out << Io::Encoding::Ascii << encrypt(Block(site_password));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -154,8 +154,8 @@ void Pv::get(std::string const &site)
    Key<128> master_key = get_master_key(m_store);
    Port::Decryptor decrypt(master_key);
    Buffer site_password(16);
-   site_in >> Io::Encoding::Base64 >> site_password;
+   site_in >> Io::Encoding::Ascii >> site_password;
 
-   std::cout << Io::Encoding::Base64 << decrypt(Block(site_password));
+   std::cout << Io::Encoding::Ascii << decrypt(Block(site_password));
 }
 
