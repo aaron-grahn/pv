@@ -19,7 +19,7 @@ public:
 
    void initialize();
    void add(std::string const &site);
-   void get(std::string const &site);
+   std::string get(std::string const &site);
 
 private:
    std::string const &m_store;

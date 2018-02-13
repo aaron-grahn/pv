@@ -75,7 +75,7 @@ int main(int argc, char **argv, char **env)
       }
       else if(std::string("get") == argv[1])
       {
-         pv.get(site);
+         std::cout << pv.get(site);
       }
       else
       {

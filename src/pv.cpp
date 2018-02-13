@@ -145,7 +145,7 @@ void Pv::add(std::string const &site)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Pv::get(std::string const &site)
+std::string Pv::get(std::string const &site)
 {
    std::string const SITE_FILE_PATH = get_site_path(m_store, site);
    assert(file_exists(SITE_FILE_PATH));
@@ -156,6 +156,8 @@ void Pv::get(std::string const &site)
    Buffer site_password(16);
    site_in >> Io::Encoding::Ascii >> site_password;
 
-   std::cout << Io::Encoding::Ascii << decrypt(Block(site_password));
+   std::stringstream password;
+   password << Io::Encoding::Ascii << decrypt(Block(site_password));
+   return password.str();
 }
 
