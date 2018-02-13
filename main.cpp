@@ -39,6 +39,21 @@ namespace
                 << std::endl;
       return 1;
    }
+   
+   /////////////////////////////////////////////////////////////////////////////
+   std::string read_passphrase()
+   {
+      // Prompt for the passphrase.
+      std::cout << "passphrase: ";
+
+      // Get the passphrase.
+      char buffer[256];
+      std::cin.getline(buffer, 256);
+      std::string passphrase(buffer);
+
+      // And return it.
+      return passphrase;
+   }
 
 } //namespace
 
@@ -47,7 +62,8 @@ int main(int argc, char **argv, char **env)
 {
    std::string const HOME = findhome(env);
    std::string const STORE = HOME + "/.pv";
-   Pv pv(STORE);
+   std::string const PASSPHRASE = read_passphrase();
+   Pv pv(STORE, PASSPHRASE);
 
    // Parse the arguments. 
    if(argc == 2)

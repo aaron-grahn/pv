@@ -61,16 +61,9 @@ namespace
    }
    
    /////////////////////////////////////////////////////////////////////////////
-   Key<256> get_user_key(std::string const &store)
+   Key<256> get_user_key(std::string const &store, 
+                         std::string const &passphrase)
    {
-      // Prompt for the passphrase.
-      std::cout << "passphrase: ";
-
-      // Get the passphrase.
-      char buffer[256];
-      std::cin.getline(buffer, 256);
-      std::string passphrase(buffer);
-
       // Hash the passphrase.
       Port::Hash hash;
       Buffer user_key_buffer(32);
@@ -84,9 +77,10 @@ namespace
    }
 
    ////////////////////////////////////////////////////////////////////////////////
-   Key<128> get_master_key(std::string const &store)
+   Key<128> get_master_key(std::string const &store, 
+                           std::string const &passphrase)
    {
-      Key<256> user_key = get_user_key(store);
+      Key<256> user_key = get_user_key(store, passphrase);
       Port::Decryptor decrypt(user_key);
 
       std::string const MASTER_KEY_PATH = store + "/master.key";
@@ -105,8 +99,9 @@ namespace
 } // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-Pv::Pv(std::string const &store)
+Pv::Pv(std::string const &store, std::string const &passphrase)
    : m_store(store)
+   , m_passphrase(passphrase)
 {
 }
 
@@ -120,7 +115,7 @@ void Pv::initialize()
    gen_salt(m_store);
 
    // Get the user key. 
-   Key<256> user_key = get_user_key(m_store);
+   Key<256> user_key = get_user_key(m_store, m_passphrase);
    Port::Encryptor encrypt(user_key);
 
    // Encrypt the master key with the user key.
@@ -138,7 +133,7 @@ void Pv::add(std::string const &site)
    assert(not file_exists(SITE_FILE_PATH));
 
    std::ofstream site_out(SITE_FILE_PATH);
-   Key<128> master_key = get_master_key(m_store);
+   Key<128> master_key = get_master_key(m_store, m_passphrase);
    Port::Encryptor encrypt(master_key);
    Random_buffer site_password(16);
    site_out << Io::Encoding::Ascii << encrypt(Block(site_password));
@@ -151,7 +146,7 @@ std::string Pv::get(std::string const &site)
    assert(file_exists(SITE_FILE_PATH));
 
    std::ifstream site_in(SITE_FILE_PATH);
-   Key<128> master_key = get_master_key(m_store);
+   Key<128> master_key = get_master_key(m_store, m_passphrase);
    Port::Decryptor decrypt(master_key);
    Buffer site_password(16);
    site_in >> Io::Encoding::Ascii >> site_password;
