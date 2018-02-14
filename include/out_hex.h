@@ -13,7 +13,7 @@ namespace Io
    namespace Ostream
    {
       //////////////////////////////////////////////////////////////////////////
-      class Hex : public Byte
+      class Hex : public Base
       {
       public:
          Hex(std::ostream &os);

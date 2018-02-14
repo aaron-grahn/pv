@@ -13,16 +13,16 @@ namespace Io
    namespace Istream
    {
       //////////////////////////////////////////////////////////////////////////
-      class Base64 : public Byte
+      class Ascii : public Base
       {
       public:
-         Base64(std::istream &is);
-         virtual ~Base64() = default;
+         Ascii(std::istream &is);
+         virtual ~Ascii() = default;
 
-         Base64(Base64 const&) = default;
-         Base64 &operator=(Base64 const&) = default;
-         Base64(Base64&&) = default;
-         Base64 &operator=(Base64&&) = default;
+         Ascii(Ascii const&) = default;
+         Ascii &operator=(Ascii const&) = default;
+         Ascii(Ascii&&) = default;
+         Ascii &operator=(Ascii&&) = default;
 
       private:
          virtual Buffer decode(std::string const &data) override;

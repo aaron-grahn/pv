@@ -24,7 +24,7 @@ Buffer const &Key_base::buffer() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Key_base const &data)
+Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Key_base const &data)
 {
    os << data.buffer();
    return os;

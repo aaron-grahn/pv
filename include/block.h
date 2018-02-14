@@ -24,6 +24,6 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Block const &data);
+Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Block const &data);
 
 #endif // BLOCK_H

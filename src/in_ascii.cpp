@@ -5,13 +5,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Base64::Base64(std::istream &is)
-   : Io::Istream::Byte::Byte(is)
+Io::Istream::Ascii::Ascii(std::istream &is)
+   : Io::Istream::Base(is)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Buffer Io::Istream::Base64::decode(std::string const &data)
+Buffer Io::Istream::Ascii::decode(std::string const &data)
 {
    Port::Encoding base64;
    return base64.decode(data);

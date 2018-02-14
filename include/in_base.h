@@ -13,18 +13,18 @@ namespace Io
    namespace Istream
    {
       //////////////////////////////////////////////////////////////////////////
-      class Byte
+      class Base
       {
       protected: 
-         Byte(std::istream &is);
+         Base(std::istream &is);
 
       public:
-         virtual ~Byte() = default;
+         virtual ~Base() = default;
 
-         Byte(Byte const&) = default;
-         Byte &operator=(Byte const&) = default;
-         Byte(Byte&&) = default;
-         Byte &operator=(Byte&&) = default;
+         Base(Base const&) = default;
+         Base &operator=(Base const&) = default;
+         Base(Base&&) = default;
+         Base &operator=(Base&&) = default;
 
          Buffer read();
 
@@ -37,6 +37,6 @@ namespace Io
 } // namespace Io
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Byte &operator>>(std::istream &is, Io::Encoding enc);
+Io::Istream::Base &operator>>(std::istream &is, Io::Encoding enc);
 
 #endif // IN_BASE_H

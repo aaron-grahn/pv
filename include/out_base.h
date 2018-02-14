@@ -13,18 +13,18 @@ namespace Io
    namespace Ostream
    {
       //////////////////////////////////////////////////////////////////////////
-      class Byte
+      class Base
       {
       protected: 
-         Byte(std::ostream &os);
+         Base(std::ostream &os);
 
       public:
-         virtual ~Byte() = default;
+         virtual ~Base() = default;
 
-         Byte(Byte const&) = default;
-         Byte &operator=(Byte const&) = default;
-         Byte(Byte&&) = default;
-         Byte &operator=(Byte&&) = default;
+         Base(Base const&) = default;
+         Base &operator=(Base const&) = default;
+         Base(Base&&) = default;
+         Base &operator=(Base&&) = default;
 
          void write(Buffer const &data);
 
@@ -37,6 +37,6 @@ namespace Io
 } // namespace Io
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(std::ostream &os, Io::Encoding enc);
+Io::Ostream::Base &operator<<(std::ostream &os, Io::Encoding enc);
 
 #endif // OUT_BASE_H

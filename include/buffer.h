@@ -9,11 +9,11 @@ namespace Io
 {
    namespace Ostream
    {
-      class Byte;
+      class Base;
    }
    namespace Istream
    {
-      class Byte;
+      class Base;
    }
 }
 
@@ -41,7 +41,7 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Buffer const &data);
-Io::Istream::Byte &operator>>(Io::Istream::Byte &is, Buffer &data);
+Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Buffer const &data);
+Io::Istream::Base &operator>>(Io::Istream::Base &is, Buffer &data);
 
 #endif // BUFFER_H

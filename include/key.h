@@ -54,6 +54,6 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Key_base const &data);
+Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Key_base const &data);
 
 #endif // KEY_H

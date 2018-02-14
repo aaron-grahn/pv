@@ -90,14 +90,14 @@ uint8_t const *Buffer::get() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Buffer const &data)
+Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Buffer const &data)
 {
    os.write(data);
    return os;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Byte &operator>>(Io::Istream::Byte &is, Buffer &data)
+Io::Istream::Base &operator>>(Io::Istream::Base &is, Buffer &data)
 {
    data = is.read();
    return is;

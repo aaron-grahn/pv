@@ -9,13 +9,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte::Byte(std::ostream &os)
+Io::Ostream::Base::Base(std::ostream &os)
    : m_os(os)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Io::Ostream::Byte::write(Buffer const &data)
+void Io::Ostream::Base::write(Buffer const &data)
 {
    m_os << encode(data);
 }
@@ -26,10 +26,10 @@ namespace
 {
    // If you've ever read "The Ones who Walk Away from Omelas," you'll
    // understand this code.
-   std::unique_ptr<Io::Ostream::Byte> out(nullptr);
+   std::unique_ptr<Io::Ostream::Base> out(nullptr);
 
    /////////////////////////////////////////////////////////////////////////////
-   Io::Ostream::Byte &get_stream(std::ostream &os, Io::Encoding enc)
+   Io::Ostream::Base &get_stream(std::ostream &os, Io::Encoding enc)
    {
       if(enc == Io::Encoding::Hex)
       {
@@ -37,7 +37,7 @@ namespace
       }
       else if(enc == Io::Encoding::Ascii)
       {
-         out.reset(new Io::Ostream::Base64(os));
+         out.reset(new Io::Ostream::Ascii(os));
       }
       else
       {
@@ -48,7 +48,7 @@ namespace
 } // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(std::ostream &os, Io::Encoding enc)
+Io::Ostream::Base &operator<<(std::ostream &os, Io::Encoding enc)
 {
    return get_stream(os, enc);
 }

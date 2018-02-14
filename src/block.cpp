@@ -31,7 +31,7 @@ std::size_t Block::size() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Byte &operator<<(Io::Ostream::Byte &os, Block const &data)
+Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Block const &data)
 {
    os << data.buffer();
    return os;

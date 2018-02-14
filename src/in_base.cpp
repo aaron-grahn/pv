@@ -8,13 +8,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Byte::Byte(std::istream &is)
+Io::Istream::Base::Base(std::istream &is)
    : m_is(is)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Buffer Io::Istream::Byte::read()
+Buffer Io::Istream::Base::read()
 {
    std::string data;
    m_is >> data;
@@ -27,14 +27,14 @@ namespace
 {
    // If you've ever read "The Ones who Walk Away from Omelas," you'll
    // understand this code.
-   std::unique_ptr<Io::Istream::Byte> in(nullptr); 
+   std::unique_ptr<Io::Istream::Base> in(nullptr); 
 
    /////////////////////////////////////////////////////////////////////////////
-   Io::Istream::Byte &get_stream(std::istream &is, Io::Encoding enc)
+   Io::Istream::Base &get_stream(std::istream &is, Io::Encoding enc)
    {
       if(enc == Io::Encoding::Ascii)
       {
-         in.reset(new Io::Istream::Base64(is));
+         in.reset(new Io::Istream::Ascii(is));
       }
       else
       {
@@ -45,7 +45,7 @@ namespace
 } // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Byte &operator>>(std::istream &is, Io::Encoding enc)
+Io::Istream::Base &operator>>(std::istream &is, Io::Encoding enc)
 {
    return get_stream(is, enc);
 }
