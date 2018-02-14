@@ -4,7 +4,8 @@
 #include <cassert>
 #include "buffer.h"
 #include "crypto_port.h"
-#include "io.h"
+#include "out_base.h"
+#include "in_base.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 Buffer::Buffer(uint8_t const * const data, std::size_t size_bytes)

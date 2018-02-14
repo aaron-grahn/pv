@@ -5,6 +5,8 @@
 #include <sys/types.h>
 #include "pv.h"
 #include "io.h"
+#include "in_base.h"
+#include "out_base.h"
 #include "crypto_port.h"
 #include "key.h"
 #include "random_buffer.h"

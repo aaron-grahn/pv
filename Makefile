@@ -23,7 +23,7 @@ ifeq ($(PORT), MBED_TLS)
 PORT_OBJECTS = crypto_mbedtls.o hash_mbedtls.o encoding_mbedtls.o
 endif
 
-OBJECTS = pv.o io.o key.o buffer.o random_buffer.o block.o $(PORT_OBJECTS)
+OBJECTS = pv.o in_base.o in_ascii.o out_base.o out_ascii.o out_hex.o key.o buffer.o random_buffer.o block.o $(PORT_OBJECTS)
 
 lib/libpv.a: $(OBJECTS)
 	mkdir -p lib
@@ -36,8 +36,20 @@ lib/libpv.so.0: $(OBJECTS)
 pv.o: src/pv.cpp
 	$(CXX) $(CXXFLAGS) -c -o pv.o src/pv.cpp
 
-io.o: src/io.cpp
-	$(CXX) $(CXXFLAGS) -c -o io.o src/io.cpp
+in_base.o: src/in_base.cpp
+	$(CXX) $(CXXFLAGS) -c -o in_base.o src/in_base.cpp
+
+in_ascii.o: src/in_ascii.cpp
+	$(CXX) $(CXXFLAGS) -c -o in_ascii.o src/in_ascii.cpp
+
+out_base.o: src/out_base.cpp
+	$(CXX) $(CXXFLAGS) -c -o out_base.o src/out_base.cpp
+
+out_ascii.o: src/out_ascii.cpp
+	$(CXX) $(CXXFLAGS) -c -o out_ascii.o src/out_ascii.cpp
+
+out_hex.o: src/out_hex.cpp
+	$(CXX) $(CXXFLAGS) -c -o out_hex.o src/out_hex.cpp
 
 key.o: src/key.cpp
 	$(CXX) $(CXXFLAGS) -c -o key.o src/key.cpp
