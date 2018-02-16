@@ -25,13 +25,12 @@ Buffer Io::Istream::Base::read()
 ////////////////////////////////////////////////////////////////////////////////
 namespace
 {
-   // If you've ever read "The Ones who Walk Away from Omelas," you'll
-   // understand this code.
-   std::unique_ptr<Io::Istream::Base> in(nullptr); 
-
    /////////////////////////////////////////////////////////////////////////////
-   Io::Istream::Base &get_stream(std::istream &is, Io::Encoding enc)
+   std::shared_ptr<Io::Istream::Base> 
+   get_stream(std::istream &is, Io::Encoding enc)
    {
+      std::shared_ptr<Io::Istream::Base> in(nullptr); 
+
       if(enc == Io::Encoding::Ascii)
       {
          in.reset(new Io::Istream::Ascii(is));
@@ -40,12 +39,13 @@ namespace
       {
          assert(false);
       }
-      return *in;
+
+      return in;
    }
 } // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Base &operator>>(std::istream &is, Io::Encoding enc)
+std::shared_ptr<Io::Istream::Base> operator>>(std::istream &is, Io::Encoding enc)
 {
    return get_stream(is, enc);
 }

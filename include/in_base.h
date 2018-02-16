@@ -1,6 +1,7 @@
 #ifndef IN_BASE_H
 #define IN_BASE_H
 
+#include <memory>
 #include <iostream>
 #include <string>
 #include "io.h"
@@ -37,6 +38,7 @@ namespace Io
 } // namespace Io
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Base &operator>>(std::istream &is, Io::Encoding enc);
+std::shared_ptr<Io::Istream::Base> 
+operator>>(std::istream &is, Io::Encoding enc);
 
 #endif // IN_BASE_H

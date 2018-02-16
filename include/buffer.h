@@ -1,6 +1,7 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
+#include <memory>
 #include <cstdint>
 #include <string>
 
@@ -41,7 +42,11 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Buffer const &data);
-Io::Istream::Base &operator>>(Io::Istream::Base &is, Buffer &data);
+std::shared_ptr<Io::Ostream::Base> 
+operator<<(std::shared_ptr<Io::Ostream::Base> os, Buffer const &data);
+
+////////////////////////////////////////////////////////////////////////////////
+std::shared_ptr<Io::Istream::Base> 
+operator>>(std::shared_ptr<Io::Istream::Base> is, Buffer &data);
 
 #endif // BUFFER_H

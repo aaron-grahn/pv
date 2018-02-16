@@ -1,6 +1,7 @@
 #ifndef KEY_H
 #define KEY_H
 
+#include <memory>
 #include <cassert>
 #include "io.h"
 #include "buffer.h"
@@ -54,6 +55,7 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Key_base const &data);
+std::shared_ptr<Io::Ostream::Base> 
+operator<<(std::shared_ptr<Io::Ostream::Base> os, Key_base const &data);
 
 #endif // KEY_H

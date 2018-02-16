@@ -1,3 +1,4 @@
+#include <memory>
 #include <cassert>
 #include "io.h"
 #include "key.h"
@@ -24,7 +25,8 @@ Buffer const &Key_base::buffer() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Key_base const &data)
+std::shared_ptr<Io::Ostream::Base> 
+operator<<(std::shared_ptr<Io::Ostream::Base> os, Key_base const &data)
 {
    os << data.buffer();
    return os;

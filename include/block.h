@@ -1,6 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include <memory>
 #include "io.h"
 #include "buffer.h"
 
@@ -24,6 +25,7 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Block const &data);
+std::shared_ptr<Io::Ostream::Base> 
+operator<<(std::shared_ptr<Io::Ostream::Base> os, Block const &data);
 
 #endif // BLOCK_H

@@ -24,13 +24,12 @@ void Io::Ostream::Base::write(Buffer const &data)
 ////////////////////////////////////////////////////////////////////////////////
 namespace
 {
-   // If you've ever read "The Ones who Walk Away from Omelas," you'll
-   // understand this code.
-   std::unique_ptr<Io::Ostream::Base> out(nullptr);
-
    /////////////////////////////////////////////////////////////////////////////
-   Io::Ostream::Base &get_stream(std::ostream &os, Io::Encoding enc)
+   std::shared_ptr<Io::Ostream::Base>
+   get_stream(std::ostream &os, Io::Encoding enc)
    {
+      std::shared_ptr<Io::Ostream::Base> out(nullptr);
+
       if(enc == Io::Encoding::Hex)
       {
          out.reset(new Io::Ostream::Hex(os));
@@ -43,12 +42,14 @@ namespace
       {
          assert(false);
       }
-      return *out;
+
+      return out;
    }
 } // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(std::ostream &os, Io::Encoding enc)
+std::shared_ptr<Io::Ostream::Base> 
+operator<<(std::ostream &os, Io::Encoding enc)
 {
    return get_stream(os, enc);
 }

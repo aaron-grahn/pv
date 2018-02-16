@@ -1,3 +1,4 @@
+#include <memory>
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -90,15 +91,17 @@ uint8_t const *Buffer::get() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Buffer const &data)
+std::shared_ptr<Io::Ostream::Base> 
+operator<<(std::shared_ptr<Io::Ostream::Base> os, Buffer const &data)
 {
-   os.write(data);
+   os->write(data);
    return os;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Istream::Base &operator>>(Io::Istream::Base &is, Buffer &data)
+std::shared_ptr<Io::Istream::Base> 
+operator>>(std::shared_ptr<Io::Istream::Base> is, Buffer &data)
 {
-   data = is.read();
+   data = is->read();
    return is;
 }

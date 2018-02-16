@@ -1,3 +1,4 @@
+#include <memory>
 #include <cassert>
 #include <fcntl.h>
 #include <unistd.h>
@@ -31,7 +32,8 @@ std::size_t Block::size() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(Io::Ostream::Base &os, Block const &data)
+std::shared_ptr<Io::Ostream::Base> 
+operator<<(std::shared_ptr<Io::Ostream::Base> os, Block const &data)
 {
    os << data.buffer();
    return os;

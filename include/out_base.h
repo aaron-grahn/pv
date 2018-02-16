@@ -1,6 +1,7 @@
 #ifndef OUT_BASE_H
 #define OUT_BASE_H
 
+#include <memory>
 #include <iostream>
 #include <string>
 #include "io.h"
@@ -37,6 +38,7 @@ namespace Io
 } // namespace Io
 
 ////////////////////////////////////////////////////////////////////////////////
-Io::Ostream::Base &operator<<(std::ostream &os, Io::Encoding enc);
+std::shared_ptr<Io::Ostream::Base>
+operator<<(std::ostream &os, Io::Encoding enc);
 
 #endif // OUT_BASE_H
