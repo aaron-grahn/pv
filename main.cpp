@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <string.h>
+#include "config.h"
 #include "pv.h"
 #include "key.h"
 #include "block.h"
@@ -60,10 +61,10 @@ namespace
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv, char **env)
 {
-   std::string const HOME = findhome(env);
-   std::string const STORE = HOME + "/.pv";
-   std::string const PASSPHRASE = read_passphrase();
-   Pv pv(STORE, PASSPHRASE);
+   std::string const home = findhome(env);
+   std::string const store_path = home + STORE;
+   std::string const passphrase = read_passphrase();
+   Pv pv(store_path, passphrase);
 
    // Parse the arguments. 
    if(argc == 2)

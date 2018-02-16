@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "config.h"
 #include "pv.h"
 #include "io.h"
 #include "in_base.h"
@@ -25,10 +26,10 @@ namespace
    /////////////////////////////////////////////////////////////////////////////
    void gen_salt(std::string const &store)
    {
-      std::string const SALT_PATH = store + "/salt";
-      assert(not file_exists(SALT_PATH));
+      std::string const salt_path = store + SALT_FILE;
+      assert(not file_exists(salt_path));
 
-      std::ofstream salt_out(SALT_PATH);
+      std::ofstream salt_out(salt_path);
       Random_buffer salt(16);
       salt_out << Io::Encoding::Ascii << salt;
    }
@@ -36,10 +37,10 @@ namespace
    /////////////////////////////////////////////////////////////////////////////
    Buffer get_salt(std::string const &store)
    {
-      std::string const SALT_PATH = store + "/salt";
-      assert(file_exists(SALT_PATH));
+      std::string const salt_path = store + SALT_FILE;
+      assert(file_exists(salt_path));
 
-      std::ifstream salt_in(SALT_PATH);
+      std::ifstream salt_in(salt_path);
       Buffer salt(16);
       salt_in >> Io::Encoding::Ascii >> salt;
       return salt;
@@ -57,9 +58,9 @@ namespace
 
       std::stringstream filename;
       filename << Io::Encoding::Hex << filebuf;
-      std::string const SITE_FILE_PATH = store + "/" + filename.str();
+      std::string const site_file_path = store + "/" + filename.str();
 
-      return SITE_FILE_PATH;
+      return site_file_path;
    }
    
    /////////////////////////////////////////////////////////////////////////////
@@ -85,11 +86,11 @@ namespace
       Key<256> user_key = get_user_key(store, passphrase);
       Port::Decryptor decrypt(user_key);
 
-      std::string const MASTER_KEY_PATH = store + "/master.key";
-      assert(file_exists(MASTER_KEY_PATH));
+      std::string const master_key_path = store + MASTER_KEY_FILE;
+      assert(file_exists(master_key_path));
 
       Buffer master_key_buffer(16);
-      std::ifstream key_in(MASTER_KEY_PATH);
+      std::ifstream key_in(master_key_path);
       key_in >> Io::Encoding::Ascii >> master_key_buffer;
 
       Key<128> master_key(decrypt(Block(master_key_buffer)));
@@ -121,9 +122,9 @@ void Pv::initialize()
    Port::Encryptor encrypt(user_key);
 
    // Encrypt the master key with the user key.
-   std::string const MASTER_KEY_PATH = m_store + "/master.key";
-   assert(not file_exists(MASTER_KEY_PATH));
-   std::ofstream key_out(MASTER_KEY_PATH);
+   std::string const master_key_path = m_store + MASTER_KEY_FILE;
+   assert(not file_exists(master_key_path));
+   std::ofstream key_out(master_key_path);
    Random_buffer master_key(16);
    key_out << Io::Encoding::Ascii << encrypt(Block(master_key));
 }
@@ -131,10 +132,10 @@ void Pv::initialize()
 ////////////////////////////////////////////////////////////////////////////////
 void Pv::add(std::string const &site)
 {
-   std::string const SITE_FILE_PATH = get_site_path(m_store, site);
-   assert(not file_exists(SITE_FILE_PATH));
+   std::string const site_file_path = get_site_path(m_store, site);
+   assert(not file_exists(site_file_path));
 
-   std::ofstream site_out(SITE_FILE_PATH);
+   std::ofstream site_out(site_file_path);
    Key<128> master_key = get_master_key(m_store, m_passphrase);
    Port::Encryptor encrypt(master_key);
    Random_buffer site_password(16);
@@ -144,10 +145,10 @@ void Pv::add(std::string const &site)
 ////////////////////////////////////////////////////////////////////////////////
 std::string Pv::get(std::string const &site)
 {
-   std::string const SITE_FILE_PATH = get_site_path(m_store, site);
-   assert(file_exists(SITE_FILE_PATH));
+   std::string const site_file_path = get_site_path(m_store, site);
+   assert(file_exists(site_file_path));
 
-   std::ifstream site_in(SITE_FILE_PATH);
+   std::ifstream site_in(site_file_path);
    Key<128> master_key = get_master_key(m_store, m_passphrase);
    Port::Decryptor decrypt(master_key);
    Buffer site_password(16);
