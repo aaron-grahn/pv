@@ -1,6 +1,9 @@
 
 #include <string>
 
+// The version of pv.
+extern std::string const VERSION_STRING = "0.0.0";
+
 // This is the path to a directory, relative to the user's home directory.
 extern std::string const STORE = "/.pv/";
 

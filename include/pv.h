@@ -9,7 +9,7 @@
 class Pv
 {
 public:
-   Pv(std::string const &store, std::string const &passphrase);
+   Pv(std::string const &store);
    ~Pv() = default;
 
    Pv(Pv const&) = delete;
@@ -17,13 +17,12 @@ public:
    Pv(Pv&&) = delete;
    Pv &operator=(Pv&&) = delete;
 
-   void initialize();
-   void add(std::string const &site);
-   std::string get(std::string const &site);
+   void initialize(std::string const &passphrase);
+   void add(std::string const &site, std::string const &passphrase);
+   std::string get(std::string const &site, std::string const &passphrase);
 
 private:
    std::string const &m_store;
-   std::string const &m_passphrase;
 };
 
 #endif // PV_H

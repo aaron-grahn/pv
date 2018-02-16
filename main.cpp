@@ -13,8 +13,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 namespace
 {
-   std::string const VERSION_STRING = "0.0.0";
-
    /////////////////////////////////////////////////////////////////////////////
    std::string findhome(char **env)
    {
@@ -36,7 +34,7 @@ namespace
    {
       std::cout << "Usage: "
                 << name << " "
-                << "{-v | init | {add | get} <site>}"
+                << "-v | init | {add | get} <site>"
                 << std::endl;
       return 1;
    }
@@ -63,15 +61,15 @@ int main(int argc, char **argv, char **env)
 {
    std::string const home = findhome(env);
    std::string const store_path = home + STORE;
-   std::string const passphrase = read_passphrase();
-   Pv pv(store_path, passphrase);
+   Pv pv(store_path);
 
    // Parse the arguments. 
    if(argc == 2)
    {
       if(std::string("init") == argv[1])
       {
-         pv.initialize();
+         std::string const passphrase = read_passphrase();
+         pv.initialize(passphrase);
       }
       else if(std::string("-v") == argv[1])
       {
@@ -88,11 +86,13 @@ int main(int argc, char **argv, char **env)
       std::string site(argv[2]);
       if(std::string("add") == argv[1])
       {
-         pv.add(site);
+         std::string const passphrase = read_passphrase();
+         pv.add(site, passphrase);
       }
       else if(std::string("get") == argv[1])
       {
-         std::cout << pv.get(site);
+         std::string const passphrase = read_passphrase();
+         std::cout << pv.get(site, passphrase);
       }
       else
       {

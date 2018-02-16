@@ -102,14 +102,13 @@ namespace
 } // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
-Pv::Pv(std::string const &store, std::string const &passphrase)
+Pv::Pv(std::string const &store)
    : m_store(store)
-   , m_passphrase(passphrase)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Pv::initialize()
+void Pv::initialize(std::string const &passphrase)
 {
    // Create the directory. 
    assert(mkdir(m_store.c_str(), 0700) == 0);
@@ -118,7 +117,7 @@ void Pv::initialize()
    gen_salt(m_store);
 
    // Get the user key. 
-   Key<256> user_key = get_user_key(m_store, m_passphrase);
+   Key<256> user_key = get_user_key(m_store, passphrase);
    Port::Encryptor encrypt(user_key);
 
    // Encrypt the master key with the user key.
@@ -130,26 +129,26 @@ void Pv::initialize()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Pv::add(std::string const &site)
+void Pv::add(std::string const &site, std::string const &passphrase)
 {
    std::string const site_file_path = get_site_path(m_store, site);
    assert(not file_exists(site_file_path));
 
    std::ofstream site_out(site_file_path);
-   Key<128> master_key = get_master_key(m_store, m_passphrase);
+   Key<128> master_key = get_master_key(m_store, passphrase);
    Port::Encryptor encrypt(master_key);
    Random_buffer site_password(16);
    site_out << Io::Encoding::Ascii << encrypt(Block(site_password));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Pv::get(std::string const &site)
+std::string Pv::get(std::string const &site, std::string const &passphrase)
 {
    std::string const site_file_path = get_site_path(m_store, site);
    assert(file_exists(site_file_path));
 
    std::ifstream site_in(site_file_path);
-   Key<128> master_key = get_master_key(m_store, m_passphrase);
+   Key<128> master_key = get_master_key(m_store, passphrase);
    Port::Decryptor decrypt(master_key);
    Buffer site_password(16);
    site_in >> Io::Encoding::Ascii >> site_password;
