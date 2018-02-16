@@ -17,34 +17,34 @@ A master key m and a salt string s are generated at initialization.
 
 A user key u is derived from a passphrase p. This derivation is 
 
-    H(p + s)
+    u = H(p + s)
 
 ## Master Key
 
 The master key m is stored in encrypted form m' as 
 
-    m' = E\_u(m)
+    m' = E_u(m)
 
 When it is needed, it is decrypted as
 
-    m = D\_u(m') 
+    m = D_u(m') 
 
 ## Site password
 
 Each site has a random password r. This is stored in encrypted form r' as
 
-    r' = E\_m(r)
+    r' = E_m(r)
 
 When it is needed, it is decrypted as 
 
-    r = D\_m(r')
+    r = D_m(r')
 
 ## Site password filename
 
 The site password r for a site n is stored in encrypted form r' in a file whose
-name is
+filename f is
 
-    H(n + s)
+    f = H(n + s)
 
 ## Attacks
 
