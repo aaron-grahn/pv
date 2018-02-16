@@ -4,8 +4,8 @@ pv is a password vault.
 
 ## Building
 
-Edit config.mk to conform to your installation, and then build with `make`, and
-install with `make install`.
+Edit config.mk and config.cpp to conform to your installation, and then build
+with `make`, and install with `make install`.
 
 # Algorithms
 
