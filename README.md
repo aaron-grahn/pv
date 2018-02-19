@@ -79,8 +79,8 @@ perform an offline attack against the user passphrase.
 # Porting
 
 A port provides implementations of E\_k(M), D\_k(M), and H(M). It also provides
-Base64 encoding. Ports are not obligated to use the same cryptographic
-primitives as one another. 
+an ascii encoding algorithm, such as base64. Ports are not obligated to use the
+same cryptographic primitives as one another. 
 
 It is necessary that the H(M) output a hash of a size that can be used as a key
 by the functions E and D. It is also necessary that the block size of the
