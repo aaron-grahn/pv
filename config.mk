@@ -1,6 +1,6 @@
 
 # Where to install pv.
-INSTALL_PREFIX = /opt/pv-0.1.0
+INSTALL_PREFIX = /opt/pv-0.2.0
 
 # Uncomment this for a fully static build
 #LDFLAGS = -static -static-libstdc++

@@ -74,14 +74,14 @@ namespace
    Key<256> get_user_key(std::string const &store, 
                          std::string const &passphrase)
    {
-      // Hash the passphrase.
+      // hash the passphrase.
       Port::Hash hash;
       Buffer user_key_buffer(32);
       hash << passphrase;
       hash << get_salt(store);
       hash >> user_key_buffer;
 
-      // Return the user key.
+      // return the user key.
       Key<256> user_key(user_key_buffer);
       return user_key;
    }
@@ -105,7 +105,7 @@ namespace
 
       Key<128> master_key(decrypt(Block(master_key_buffer)));
 
-      // Return the user key.
+      // return the user key.
       return master_key;
    }
 
@@ -114,11 +114,11 @@ namespace
                          std::string const &passphrase,
                          Key<128> const &master_key)
    {
-      // Get the user key. 
+      // get the user key. 
       Key<256> user_key = get_user_key(store, passphrase);
       Port::Encryptor encrypt(user_key);
 
-      // Encrypt the master key with the user key.
+      // encrypt the master key with the user key.
       std::string const master_key_path = store + MASTER_KEY_FILE;
       if(file_exists(master_key_path))
       {
@@ -139,16 +139,16 @@ Pv::Pv(std::string const &store)
 ////////////////////////////////////////////////////////////////////////////////
 void Pv::initialize(std::string const &passphrase)
 {
-   // Create the directory. 
+   // create the directory. 
    if(mkdir(m_store.c_str(), 0700) != 0)
    {
       throw std::exception();
    }
 
-   // Initialize the store. First, make some salt.
+   // initialize the store. First, make some salt.
    gen_salt(m_store);
 
-   // Then generate, and store, the master key. 
+   // then generate, and store, the master key. 
    Random_buffer master_key_buffer(16);
    Key<128> master_key(master_key_buffer);
    store_master_key(m_store, passphrase, master_key);
@@ -161,7 +161,7 @@ void Pv::change(std::string const &old_passphrase,
    // get the master key, using the old passphrase
    Key<128> master_key = get_master_key(m_store, old_passphrase);
 
-   // Move the old master key to a backup file. Don't want to lose it...
+   // move the old master key to a backup file. Don't want to lose it...
    std::string const master_key_path = m_store + MASTER_KEY_FILE;
    std::string const master_key_bak = m_store + MASTER_KEY_BACKUP_FILE;
    if(rename(master_key_path.c_str(), master_key_bak.c_str()) != 0)
@@ -207,5 +207,26 @@ std::string Pv::get(std::string const &site, std::string const &passphrase)
    std::stringstream password;
    password << Io::Encoding::Ascii << decrypt(Block(site_password));
    return password.str();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Pv::change_site(std::string const &site, std::string const &passphrase)
+{
+   // get the site file path
+   std::string const site_file_path = get_site_path(m_store, site);
+   if(not file_exists(site_file_path))
+   {
+      throw std::exception();
+   }
+
+   // move the old site password to a backup file. Don't want to lose it...
+   std::string const site_file_backup = site_file_path + BACKUP_FILE_EXTENSION;
+   if(rename(site_file_path.c_str(), site_file_backup.c_str()) != 0)
+   {
+      throw std::exception();
+   }
+
+   // add a new password for the site. 
+   add(site, passphrase);
 }
 

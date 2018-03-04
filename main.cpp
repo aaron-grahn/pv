@@ -34,7 +34,7 @@ namespace
    {
       std::cout << "Usage: "
                 << name << " "
-                << "-v | init | change | {add | get} <site>"
+                << "-v | init | change [<site>] | {add | get} <site>"
                 << std::endl;
       return 1;
    }
@@ -110,6 +110,11 @@ int main(int argc, char **argv, char **env)
       {
          std::string const passphrase = read_passphrase();
          std::cout << pv.get(site, passphrase);
+      }
+      else if(std::string("change") == argv[1])
+      {
+         std::string const passphrase = read_passphrase();
+         pv.change_site(site, passphrase);
       }
       else
       {

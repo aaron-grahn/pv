@@ -31,6 +31,17 @@ Once you've verified that the passphrase change was successful, the backup file
 should be securely removed, to prevent a possible offline attack against the
 user passphrase.
 
+## pv change {site}
+
+Changes the site password for the provided site. The old site password is stored
+in a backup file. 
+
+Once you've verified that the site password change was successful, the backup
+file should be securely removed; its existence doesn't create an offline attack
+against the user passphrase, but it could result in confusion if you later
+change another site password, and a complication results in your needing to
+restore that site password from its backup. 
+
 ## pv add {site}
 
 Generates a random block from which to derive the password for the provided

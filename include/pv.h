@@ -21,6 +21,8 @@ public:
    void add(std::string const &site, std::string const &passphrase);
    void change(std::string const &old_passphrase, 
                std::string const &new_passphrase);
+   void change_site(std::string const &site, 
+                    std::string const &passphrase);
    std::string get(std::string const &site, std::string const &passphrase);
 
 private:
