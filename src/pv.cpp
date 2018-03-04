@@ -109,6 +109,25 @@ namespace
       return master_key;
    }
 
+   ////////////////////////////////////////////////////////////////////////////////
+   void store_master_key(std::string const &store,
+                         std::string const &passphrase,
+                         Key<128> const &master_key)
+   {
+      // Get the user key. 
+      Key<256> user_key = get_user_key(store, passphrase);
+      Port::Encryptor encrypt(user_key);
+
+      // Encrypt the master key with the user key.
+      std::string const master_key_path = store + MASTER_KEY_FILE;
+      if(file_exists(master_key_path))
+      {
+         throw std::exception();
+      }
+      std::ofstream key_out(master_key_path);
+      key_out << Io::Encoding::Ascii << encrypt(Block(master_key));
+   }
+
 } // namespace
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,19 +148,29 @@ void Pv::initialize(std::string const &passphrase)
    // Initialize the store. First, make some salt.
    gen_salt(m_store);
 
-   // Get the user key. 
-   Key<256> user_key = get_user_key(m_store, passphrase);
-   Port::Encryptor encrypt(user_key);
+   // Then generate, and store, the master key. 
+   Random_buffer master_key_buffer(16);
+   Key<128> master_key(master_key_buffer);
+   store_master_key(m_store, passphrase, master_key);
+}
 
-   // Encrypt the master key with the user key.
+////////////////////////////////////////////////////////////////////////////////
+void Pv::change(std::string const &old_passphrase, 
+                std::string const &new_passphrase)
+{
+   // get the master key, using the old passphrase
+   Key<128> master_key = get_master_key(m_store, old_passphrase);
+
+   // Move the old master key to a backup file. Don't want to lose it...
    std::string const master_key_path = m_store + MASTER_KEY_FILE;
-   if(file_exists(master_key_path))
+   std::string const master_key_bak = m_store + MASTER_KEY_BACKUP_FILE;
+   if(rename(master_key_path.c_str(), master_key_bak.c_str()) != 0)
    {
       throw std::exception();
    }
-   std::ofstream key_out(master_key_path);
-   Random_buffer master_key(16);
-   key_out << Io::Encoding::Ascii << encrypt(Block(master_key));
+
+   // store the master key, using the new passphrase
+   store_master_key(m_store, new_passphrase, master_key);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

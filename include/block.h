@@ -5,11 +5,15 @@
 #include "io.h"
 #include "buffer.h"
 
+template <std::size_t size_bits>
+class Key;
+
 ////////////////////////////////////////////////////////////////////////////////
 class Block
 {
 public:
    explicit Block(Buffer const &data);
+   explicit Block(Key<128> const &data);
    virtual ~Block() = default;
 
    Block(Block const&) = default;

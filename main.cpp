@@ -34,16 +34,16 @@ namespace
    {
       std::cout << "Usage: "
                 << name << " "
-                << "-v | init | {add | get} <site>"
+                << "-v | init | change | {add | get} <site>"
                 << std::endl;
       return 1;
    }
    
    /////////////////////////////////////////////////////////////////////////////
-   std::string read_passphrase()
+   std::string read_passphrase(std::string const &prompt)
    {
       // Prompt for the passphrase.
-      std::cout << "passphrase: ";
+      std::cout << prompt << ": ";
 
       // Get the passphrase.
       char buffer[256];
@@ -54,6 +54,11 @@ namespace
       return passphrase;
    }
 
+   /////////////////////////////////////////////////////////////////////////////
+   std::string read_passphrase()
+   {
+      return read_passphrase("passphrase");
+   }
 } //namespace
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +75,18 @@ int main(int argc, char **argv, char **env)
       {
          std::string const passphrase = read_passphrase();
          pv.initialize(passphrase);
+      }
+      else if(std::string("change") == argv[1])
+      {
+         std::string const old_passphrase = read_passphrase("old passphrase");
+         std::string const new_passphrase = read_passphrase("new passphrase");
+         std::string const confirm_passphrase = 
+            read_passphrase("confirm new passphrase");
+         if(new_passphrase != confirm_passphrase)
+         {
+            throw std::exception();
+         }
+         pv.change(old_passphrase, new_passphrase);
       }
       else if(std::string("-v") == argv[1])
       {
