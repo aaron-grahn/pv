@@ -7,6 +7,37 @@ pv is a password vault.
 Edit config.mk and config.cpp to conform to your installation, and then build
 with `make`, and install with `make install`.
 
+# Usage
+
+## pv -v
+
+Displays the version of pv. 
+
+## pv init
+
+Initializes the store, by generating a random master key and a random salt
+value, and encrypting the master key with a key derived from the user
+passphrase.
+
+The user passphrase is never stored, even in an encrypted form.
+
+## pv change
+
+Changes the user passphrase by decrypting the master key using the old
+passphrase, and encrypting it using the new passphrase. The master key,
+encrypted under the old passphrase, is stored in a backup file. 
+
+## pv add {site}
+
+Generates a random block from which to derive the password for the provided
+site. This block is encrypted under the master key for storage. The file in
+which it is stored is named by hashing the provided site together with the
+random salt value, and encoding this hash.
+
+## pv get {site}
+
+Retrieves, decrypts, encodes, and outputs the password for the provided site. 
+
 # Algorithms
 
 pv makes use of a cipher M' = E\_k(M), M = D\_k(M'); and a hash H(M).
