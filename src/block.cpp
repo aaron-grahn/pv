@@ -1,5 +1,5 @@
 #include <memory>
-#include <cassert>
+#include <exception>
 #include <fcntl.h>
 #include <unistd.h>
 #include "block.h"
@@ -16,7 +16,10 @@ namespace
 Block::Block(Buffer const &data)
    : m_buffer(data)
 {
-   assert(data.size() == BLOCK_SIZE_BYTES);
+   if(data.size() != BLOCK_SIZE_BYTES)
+   {
+      throw std::exception();
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

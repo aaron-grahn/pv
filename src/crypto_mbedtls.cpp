@@ -1,4 +1,4 @@
-#include <cassert>
+#include <exception>
 #include <mbedtls/aes.h>
 #include <cstring>
 #include "crypto_mbedtls.h"
@@ -26,7 +26,10 @@ Block Port::Mbedtls::Cryptor::operator()(Block const &data)
                                       m_mode,
                                       data.buffer().get(),
                                       &cipher[0]);
-   assert(result == 0);
+   if(result != 0)
+   {
+      throw std::exception();
+   }
    return Block(cipher);
 }
 
@@ -37,7 +40,10 @@ Port::Mbedtls::Encryptor::Encryptor(Key_base const &key)
    int result = mbedtls_aes_setkey_enc(&m_aes_context, 
                                        key.buffer().get(), 
                                        key.size());
-   assert(result == 0);
+   if(result != 0)
+   {
+      throw std::exception();
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +53,9 @@ Port::Mbedtls::Decryptor::Decryptor(Key_base const &key)
    int result = mbedtls_aes_setkey_dec(&m_aes_context, 
                                        key.buffer().get(), 
                                        key.size());
-   assert(result == 0);
+   if(result != 0)
+   {
+      throw std::exception();
+   }
 }
 

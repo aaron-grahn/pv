@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include <cassert>
+#include <exception>
 #include "buffer.h"
 #include "crypto_port.h"
 #include "out_base.h"
@@ -13,7 +13,10 @@ Buffer::Buffer(uint8_t const * const data, std::size_t size_bytes)
    : m_size_bytes(size_bytes)
    , m_buffer()
 {
-   assert(m_size_bytes <= 32);
+   if(m_size_bytes > 32)
+   {
+      throw std::exception();
+   }
    static_cast<void>(memcpy(m_buffer, data, m_size_bytes));
 }
 
@@ -22,7 +25,10 @@ Buffer::Buffer(std::string const &data)
    : m_size_bytes(data.size())
    , m_buffer()
 {
-   assert(m_size_bytes <= 32);
+   if(m_size_bytes > 32)
+   {
+      throw std::exception();
+   }
    static_cast<void>(memcpy(m_buffer, data.c_str(), m_size_bytes));
 }
 
@@ -31,7 +37,10 @@ Buffer::Buffer(size_t size_bytes)
    : m_size_bytes(size_bytes)
    , m_buffer()
 {
-   assert(size_bytes <= 32);
+   if(m_size_bytes > 32)
+   {
+      throw std::exception();
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

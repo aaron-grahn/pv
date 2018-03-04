@@ -2,7 +2,7 @@
 #define KEY_H
 
 #include <memory>
-#include <cassert>
+#include <exception>
 #include "io.h"
 #include "buffer.h"
 #include "block.h"
@@ -38,7 +38,10 @@ public:
    explicit Key(Buffer const &data)
       : Key_base(data)
    {
-      assert(data.size() * 8 == size_bits);
+      if((data.size() * 8) != size_bits)
+      {
+         throw std::exception();
+      }
    }
 
    explicit Key(Block const &data)

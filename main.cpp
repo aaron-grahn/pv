@@ -1,4 +1,4 @@
-#include <cassert>
+#include <exception>
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -26,7 +26,7 @@ namespace
             return home;
          }
       }
-      assert(false);
+      throw std::exception();
    }
 
    /////////////////////////////////////////////////////////////////////////////

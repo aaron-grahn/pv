@@ -7,8 +7,8 @@ namespace Io
    /////////////////////////////////////////////////////////////////////////////
    enum class Encoding : int
    {
-      Hex,
-      Ascii,
+      Hex = 1,
+      Ascii = 2,
    };
 } // namespace Io
 

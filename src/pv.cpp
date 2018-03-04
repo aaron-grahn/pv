@@ -1,4 +1,5 @@
 #include <iostream>
+#include <exception>
 #include <sstream>
 #include <fstream>
 #include <sys/stat.h>
@@ -27,7 +28,10 @@ namespace
    void gen_salt(std::string const &store)
    {
       std::string const salt_path = store + SALT_FILE;
-      assert(not file_exists(salt_path));
+      if(file_exists(salt_path))
+      {
+         throw std::exception();
+      }
 
       std::ofstream salt_out(salt_path);
       Random_buffer salt(16);
@@ -38,7 +42,10 @@ namespace
    Buffer get_salt(std::string const &store)
    {
       std::string const salt_path = store + SALT_FILE;
-      assert(file_exists(salt_path));
+      if(not file_exists(salt_path))
+      {
+         throw std::exception();
+      }
 
       std::ifstream salt_in(salt_path);
       Buffer salt(16);
@@ -87,7 +94,10 @@ namespace
       Port::Decryptor decrypt(user_key);
 
       std::string const master_key_path = store + MASTER_KEY_FILE;
-      assert(file_exists(master_key_path));
+      if(not file_exists(master_key_path))
+      {
+         throw std::exception();
+      }
 
       Buffer master_key_buffer(16);
       std::ifstream key_in(master_key_path);
@@ -111,7 +121,10 @@ Pv::Pv(std::string const &store)
 void Pv::initialize(std::string const &passphrase)
 {
    // Create the directory. 
-   assert(mkdir(m_store.c_str(), 0700) == 0);
+   if(mkdir(m_store.c_str(), 0700) != 0)
+   {
+      throw std::exception();
+   }
 
    // Initialize the store. First, make some salt.
    gen_salt(m_store);
@@ -122,7 +135,10 @@ void Pv::initialize(std::string const &passphrase)
 
    // Encrypt the master key with the user key.
    std::string const master_key_path = m_store + MASTER_KEY_FILE;
-   assert(not file_exists(master_key_path));
+   if(file_exists(master_key_path))
+   {
+      throw std::exception();
+   }
    std::ofstream key_out(master_key_path);
    Random_buffer master_key(16);
    key_out << Io::Encoding::Ascii << encrypt(Block(master_key));
@@ -132,7 +148,10 @@ void Pv::initialize(std::string const &passphrase)
 void Pv::add(std::string const &site, std::string const &passphrase)
 {
    std::string const site_file_path = get_site_path(m_store, site);
-   assert(not file_exists(site_file_path));
+   if(file_exists(site_file_path))
+   {
+      throw std::exception();
+   }
 
    std::ofstream site_out(site_file_path);
    Key<128> master_key = get_master_key(m_store, passphrase);
@@ -145,7 +164,10 @@ void Pv::add(std::string const &site, std::string const &passphrase)
 std::string Pv::get(std::string const &site, std::string const &passphrase)
 {
    std::string const site_file_path = get_site_path(m_store, site);
-   assert(file_exists(site_file_path));
+   if(not file_exists(site_file_path))
+   {
+      throw std::exception();
+   }
 
    std::ifstream site_in(site_file_path);
    Key<128> master_key = get_master_key(m_store, passphrase);

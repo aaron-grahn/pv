@@ -1,7 +1,7 @@
 #include <memory>
 #include <iostream>
 #include <string>
-#include <cassert>
+#include <exception>
 #include "io.h"
 #include "in_base.h"
 #include "in_ascii.h"
@@ -37,7 +37,7 @@ namespace
       }
       else
       {
-         assert(false);
+         throw std::exception();
       }
 
       return in;

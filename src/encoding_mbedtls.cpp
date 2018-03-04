@@ -1,4 +1,4 @@
-#include <cassert>
+#include <exception>
 #include <mbedtls/base64.h>
 #include <cstring>
 #include "encoding_mbedtls.h"
@@ -18,7 +18,10 @@ std::string Port::Mbedtls::Encoding::encode(Buffer const &data)
                                       &olen,
                                       data.get(),
                                       data.size());
-   assert(result == 0);
+   if(result != 0)
+   {
+      throw std::exception();
+   }
    std::string str(&buf[0], olen);
    return str;
 }
@@ -34,7 +37,10 @@ Buffer Port::Mbedtls::Encoding::decode(std::string const &data)
                                       &olen,
                                       data_p,
                                       data.size());
-   assert(result == 0);
+   if(result != 0)
+   {
+      throw std::exception();
+   }
    Buffer output(buf, olen);
    return output;
 }

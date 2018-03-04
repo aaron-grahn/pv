@@ -1,6 +1,6 @@
 #include <memory>
 #include <iostream>
-#include <cassert>
+#include <exception>
 #include "io.h"
 #include "out_base.h"
 #include "out_hex.h"
@@ -40,7 +40,7 @@ namespace
       }
       else
       {
-         assert(false);
+         throw std::exception();
       }
 
       return out;

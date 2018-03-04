@@ -86,6 +86,14 @@ It is necessary that the H(M) output a hash of a size that can be used as a key
 by the functions E and D. It is also necessary that the block size of the
 functions E and D is the same as a valid key size.
 
+# Versioning
+
+The major version is to be incremented when changes break compatibility with
+existing password stores. The minor version is to be incremented when new
+features are added that do not break compatibility. Releases that do not add new
+features only increment the build version. Prior to version 1.0.0, everything is
+potentially in flux. 
+
 # How to get randomness
 
 Reading from /dev/random is fast and probably secure enough. 

@@ -1,5 +1,4 @@
 #include <memory>
-#include <cassert>
 #include "io.h"
 #include "key.h"
 #include "buffer.h"
