@@ -33,8 +33,8 @@ lib/libpv.so.0: $(OBJECTS)
 	mkdir -p lib
 	$(CXX) -o lib/libpv.so.0 $(OBJECTS) -shared
 
-config.o: src/config.cpp
-	$(CXX) $(CXXFLAGS) -c -o config.o src/config.cpp
+config.o: config.cpp
+	$(CXX) $(CXXFLAGS) -c -o config.o config.cpp
 
 pv.o: src/pv.cpp
 	$(CXX) $(CXXFLAGS) -c -o pv.o src/pv.cpp
