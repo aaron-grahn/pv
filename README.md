@@ -27,6 +27,10 @@ Changes the user passphrase by decrypting the master key using the old
 passphrase, and encrypting it using the new passphrase. The master key,
 encrypted under the old passphrase, is stored in a backup file. 
 
+Once you've verified that the passphrase change was successful, the backup file
+should be securely removed, to prevent a possible offline attack against the
+user passphrase.
+
 ## pv add {site}
 
 Generates a random block from which to derive the password for the provided
@@ -83,15 +87,20 @@ The passphrase is used to derive a key, and that key is used to decrypt the
 master key. The master key, decrypted correctly, looks exactly like the master
 key, decrypted incorrectly, and works just as well to decrypt the site
 passwords, which also look the same whether correctly or incorrectly decrypted.
-An attacker would have to test the decrypted password against the site. 
+An attacker would have to test the decrypted site password against the site. 
 
 An attacker who knows the password for some site can perform an offline attack
 against the user passphrase, however, and could therefore learn all the other
-passwords. 
+site passwords. 
 
 An attacker can easily enough determine, offline, whether a password for some
 site exists, by hashing the site name together with the salt, and checking if
-such a file exists in the store.
+such a file exists in the store. 
+
+Suppose that, after a passphrase change, the master key backup file is retained.
+Now there are two blocks, with identical plaintext, but different keys. An
+attacker could, therefore, search for pairs of passphrases that derive pairs of
+keys that decrypt the two blocks identically.
 
 ### A design that is (nearly) immune to offline attacks
 
