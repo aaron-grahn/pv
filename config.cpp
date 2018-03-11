@@ -14,3 +14,5 @@ extern std::string const MASTER_KEY_BACKUP_FILE =
    "master.key" + BACKUP_FILE_EXTENSION;
 extern std::string const SALT_FILE = "salt";
 
+// Whence to get randomness
+extern std::string const RANDOM_SOURCE = "/dev/random";
