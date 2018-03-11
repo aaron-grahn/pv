@@ -11,7 +11,7 @@ namespace
    Buffer get_data(std::size_t size_bytes)
    {
       Buffer buffer(size_bytes);
-      int fd = open(RANDOM_SOURCE, O_RDONLY);
+      int fd = open(RANDOM_SOURCE.c_str(), O_RDONLY);
       std::size_t bytes_read = 0;
       uint8_t *cbuf = &buffer[0];
       while(bytes_read < size_bytes)
